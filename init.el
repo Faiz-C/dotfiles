@@ -1,6 +1,7 @@
 ;;
 ;; P A C K A G E   M A N A G E M E N T
-;
+;;
+
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -17,29 +18,25 @@
 
 ;; SHORTCUTS
 (global-set-key (kbd "C-c C-l") '(lambda () (interactive)(load-file user-init-file)))
+(global-set-key (kbd "M-p e") 'neotree-toggle)
 (global-set-key (kbd "C-c e") '(lambda () (interactive)(find-file user-init-file)))
 (global-set-key (kbd "C-c C-t") '(lambda () (interactive)
                              (split-window-vertically)
                              (other-window 1)
-                             (ansi-term "/bin/zsh")))
+                             (ansi-term "/bin/bash")))
                              
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-c\ r" 'counsel-recentf)
-
 ;;
 ;; G E N E R A L   S E T T I N G S
 ;;
 
 (display-battery-mode)
 
-(setq explicit-shell-file-name "/bin/zsh")
-
 (setq inhibit-splash-screen t
       inhibit-startup-message t)
 (setq initial-scratch-message "") ; No scratch text
 (fset 'yes-or-no-p 'y-or-n-p) ; y/n instead of yes/no
 (column-number-mode t) ; show column number in mode line
+(global-linum-mode t) ; show line number
 (delete-selection-mode 1) ; Replace selection on insert
 (setq vc-follow-symlinks t) ; Always follow symlinks
 (setq custom-file "~/.emacs.d/custom.el") ; Set custom file
@@ -51,17 +48,26 @@
       visible-bell t ; Visually indicate bell
       load-prefer-newer t ; Load newer source over compiled
       ediff-window-setup-function 'ediff-setup-windows-plain) ; Cleaner diff
-(setq-default indent-tabs-mode nil) ; Use spaces instead of tabs
-(setq default-tab-width 2)
-(setq-default c-basic-offset 2)
 (show-paren-mode 1) ; Show matching parens
-;(custom-set-variables '(initial-frame-alist (quote ((fullscreen . maximized))))) ; Start in maximum windows mode
 (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
-(custom-set-variables '(default-frame-alist '((undercorated . t))))
-(custom-set-variables
- '(python-guess-indent nil)
- '(python-indent 2))
+(custom-set-variables '(default-frame-alist '((undercorated . t)))
+											'(neo-window-position (quote right)))
 
+;; Indentation
+(defun setup-indentation(level)
+  (setq-default indent-tabs-mode t) ; Use spaces instead of tabs
+  (setq-default tab-width level)
+  (setq-default python-indent-offset level)
+  (setq-default c-basic-offset level) ; covers C, C++, Java
+  (setq-default javascript-indent-level level)
+  (setq-default js-indent-level level)
+  (setq-default coffee-tab-width level)
+  (setq-default web-mode-markup-indent-offset level)
+  (setq-default web-mode-css-indent-offset level)
+  (setq-default web-mode-code-indent-offset level)
+  (setq-default css-indent-offset level)
+  )
+(setup-indentation 2)
 
 ;; Don't show any of the graphical bars
 (menu-bar-mode -1)
@@ -77,16 +83,12 @@
 (setq save-place-file (concat user-emacs-directory "places"))
 (setq org-export-with-section-numbers nil)
 (setq org-export-with-toc nil)
+
 ;;
 ;; P A C K A G E S
 ;;
 
-;;
 ;; My Enjoyed Themes
-;;
-
-(set-frame-font "Hermit 14")
-
 ;(use-package soothe-theme
 ;  :config
 ;  (load-theme 'soothe t))
@@ -103,15 +105,46 @@
 ;  :config
 ;  (load-theme 'color-theme-sanityinc-tommorrow t))
 
-
-;; AUTO COMPLETE
+;; Auto Complete
 (use-package company
   :config
   (global-company-mode t))
 
+;; Error Checking
 (use-package flycheck
   :config
   (global-flycheck-mode t))
+
+;; Project Management, Tree Structure
+(use-package neotree)
+(use-package all-the-icons)
+(setq all-the-icons-color-icons t)
+(setq all-the-icons-for-buffer t)
+(setq neo-smart-open t)
+(setq projectile-switch-project-action 'neotree-projectile-action)
+(add-hook 'neotree-mode-hook
+  (lambda()
+		(define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+		(define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+		(define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+		(define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+		(define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+		(define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
+		(define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
+		(define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
+		(define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
+(add-hook 'neo-after-create-hook (lambda (&optional dummy) (global-linum-mode -1)))
+
+
+;; Java Setup
+(use-package eclim)
+(use-package eclimd)
+(add-hook 'java-mode-hook 'eclim-mode)
+(use-package company-emacs-eclim
+	:config
+	(company-emacs-eclim-setup))
+(define-key eclim-mode-map (kbd "C-c C-c") 'eclim-problems-correct)
+(define-key eclim-mode-map (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
 
 (use-package omnisharp
   :after company
@@ -127,7 +160,7 @@
   :bind
   ("C-c C-s" . sx-search))
 
-;; MULTIPLE CURSORS
+;; Multiple Curs
 (use-package multiple-cursors
   :bind
   (("C-M-c" . mc/edit-lines)))
@@ -168,35 +201,6 @@
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
   (setq-default evil-symbol-word-search t))
-
-
-;;
-;; C SHARP BOI
-;;
-
-(eval-after-load
- 'company
- '(add-to-list 'company-backends 'company-omnisharp))
-
-(add-hook 'csharp-mode-hook #'company-mode)
-
-(use-package omnisharp
-  :config
-  (add-hook 'csharp-mode-hook 'omnisharp-mode))
-
-;;
-;; Java BOI
-;;
-
-;(use-package company-emacs-eclim
-;  :config
-;  (company-emacs-eclim-setup))
-
-;(use-package eclim
-;  :config
-;  (add-hook 'java-mode-hook 'eclim-mode))
-
-(add-hook 'java-mode-hook (lambda () (setq c-default-style "bsd"))) 
 
 ;;
 ;; B A C K U P S
