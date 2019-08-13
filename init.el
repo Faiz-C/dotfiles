@@ -4,6 +4,7 @@
 
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (setq package-enable-at-startup nil)
@@ -23,7 +24,7 @@
 (global-set-key (kbd "C-c C-t") '(lambda () (interactive)
                              (split-window-vertically)
                              (other-window 1)
-                             (ansi-term "/bin/bash")))
+                             (ansi-term "/bin/zsh")))
                              
 ;;
 ;; G E N E R A L   S E T T I N G S
@@ -53,6 +54,9 @@
 (custom-set-variables '(default-frame-alist '((undercorated . t)))
 											'(neo-window-position (quote right)))
 
+;; Font
+(set-frame-font "Hermit 13" nil t)
+
 ;; Indentation
 (defun setup-indentation(level)
   (setq-default indent-tabs-mode t) ; Use spaces instead of tabs
@@ -61,6 +65,7 @@
   (setq-default c-basic-offset level) ; covers C, C++, Java
   (setq-default javascript-indent-level level)
   (setq-default js-indent-level level)
+  (setq-default js2-indent-level level)
   (setq-default coffee-tab-width level)
   (setq-default web-mode-markup-indent-offset level)
   (setq-default web-mode-css-indent-offset level)
@@ -133,12 +138,23 @@
 		(define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
 		(define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
 		(define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
-(add-hook 'neo-after-create-hook (lambda (&optional dummy) (global-linum-mode -1)))
+(add-hook 'neo-after-create-hook (lambda (_ignored) (linum-mode -1)))
 
+;; Python Setup
+(use-package elpy
+	:ensure t
+	:init
+	(elpy-enable))
+(setq elpy-rpc-python-command "python3")
+
+;; Ansible
+(use-package ansible)
+
+;; JavaScript
+(use-package indium)
 
 ;; Java Setup
 (use-package eclim)
-(use-package eclimd)
 (add-hook 'java-mode-hook 'eclim-mode)
 (use-package company-emacs-eclim
 	:config
@@ -146,16 +162,22 @@
 (define-key eclim-mode-map (kbd "C-c C-c") 'eclim-problems-correct)
 (define-key eclim-mode-map (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
 
+;; C# Setup
 (use-package omnisharp
   :after company
   :config
   (add-hook 'csharp-mode-hook 'omnisharp-mode)
   (add-to-list 'company-backends 'company-omnisharp))
 
+;; Golang
+(use-package go-mode)
+
+;; Latex Previews
 (use-package latex-preview-pane
   :config
   (latex-preview-pane-enable))
 
+;; Search
 (use-package sx
   :bind
   ("C-c C-s" . sx-search))
