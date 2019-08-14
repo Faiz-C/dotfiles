@@ -55,7 +55,7 @@
 											'(neo-window-position (quote right)))
 
 ;; Font
-(set-frame-font "Hermit 13" nil t)
+(set-frame-font "Hermit 15" nil t)
 
 ;; Indentation
 (defun setup-indentation(level)
@@ -154,13 +154,8 @@
 (use-package indium)
 
 ;; Java Setup
-(use-package eclim)
-(add-hook 'java-mode-hook 'eclim-mode)
-(use-package company-emacs-eclim
-	:config
-	(company-emacs-eclim-setup))
-(define-key eclim-mode-map (kbd "C-c C-c") 'eclim-problems-correct)
-(define-key eclim-mode-map (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
+(use-package cask)
+(use-package jdee)
 
 ;; C# Setup
 (use-package omnisharp
