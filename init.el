@@ -86,6 +86,48 @@
 ;; PACKAGES
 ;;
 
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq treemacs-silent-refresh t
+          treemacs-silent-filewatch t
+          treemacs-is-never-other-window t
+          treemacs-change-root-without-asking t)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null (executable-find "python3"))))
+      (`(t . t)
+       (treemacs-git-mode 'extended))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("C-c f" . treemacs-select-window)))
+
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+
 ;; Better unique buffer names
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
@@ -95,15 +137,26 @@
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
 
-;; Theme
-(use-package clues-theme
- :config
- (load-theme 'clues t))
+;; Kotlin
+(use-package kotlin-mode)
 
-;; Auto Complete
+;; Themes
+;; (use-package clues-theme
+;;  :config
+;;  (load-theme 'clues t))
+
+(use-package afternoon-theme
+  :config
+  (load-theme `afternoon t))
+
+;; Auto Complete via Company
 (use-package company
   :config
   (global-company-mode t))
+
+(use-package company-quickhelp
+  :config
+  (company-quickhelp-mode))
 
 ;; Flycheck linting
 (use-package flycheck
@@ -144,7 +197,12 @@
   :config
   (which-key-mode))
 
-;; EVIL (VIM)
+;; Disable Mouse
+(use-package disable-mouse
+  :config
+  (global-disable-mouse-mode))
+
+;; Evil (vim)
 (use-package evil
   :init
   (setq evil-want-C-u-scroll t)
@@ -184,3 +242,16 @@
 ;; backup in one place. flat, no tree structure
 (setq auto-save-file-name-transforms '((".*" "~/.bak.emacs/auto/" t)))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(kotlin-mode disable-mouse afternoon-theme company-quickhelp-terminal treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil treemacs which-key use-package sx smex org-bullets omnisharp neotree latex-preview-pane jdee indium go-mode exec-path-from-shell evil elpy counsel clues-theme cask ansible all-the-icons)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
