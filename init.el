@@ -21,14 +21,14 @@
 ;;
 
 ;; Set font (I like Hermit, feel free to update)
-(add-to-list `default-frame-alist '(font . "Hermit-13"))
+(set-frame-font "Hermit-16")
 
 ;; Use recentf
 (recentf-mode 1)
 (setq recentf-max-menu-items 10)
 
 ;; Set default directory (update it to your wanted directory)
-(setq default-directory "")
+(setq default-directory "~")
 
 ;; Turn off splash screen and startup screen
 (setq inhibit-splash-screen t
@@ -61,17 +61,15 @@
 ;; show matching parenthesis to the one you are on
 (show-paren-mode 1)
 
-;; Start in maximum windows mode
-(add-to-list `initial-frame-alist '(fullscreen . maximized))
-
-;; Undecorated frames
-(add-to-list `default-frame-alist '(undecorated . t))
-
-;; Don't show any of the graphical bars
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(horizontal-scroll-bar-mode -1)
+(cond ((eq system-type `darwin) ;; Real Full Screen for Mac OSX
+       (set-frame-parameter nil `fullscreen `fullboth))
+      ((or (eq system-type `windows-nt) (eq system-type `cygwin) ;; Real Full Screen for Windows
+           (progn (add-to-list `initial-frame-alist '(fullscreen . maximized))
+                  (add-to-list `default-frame-alist '(undecorated . t))
+                  (menu-bar-mode -1)
+                  (tool-bar-mode -1)
+                  (scroll-bar-mode -1)
+                  (horizontal-scroll-bar-mode -1)))))
 
 ;; Orgmode and Latex
 (setq-default org-pretty-entities t ; Make latex symbols auto display
@@ -84,6 +82,10 @@
       org-export-with-section-numbers nil ; No section numbers on export
       org-export-with-toc nil) ; No toc on export
 
+;;
+;; PACKAGES
+;;
+
 ;; Better unique buffer names
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
@@ -92,10 +94,6 @@
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
-
-;;
-;; PACKAGES
-;;
 
 ;; Theme
 (use-package clues-theme
