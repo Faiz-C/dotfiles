@@ -1,10 +1,9 @@
 ;;
-;; P A C K A G E   M A N A G E M E N T
+;; PACKAGE MANAGEMENT
 ;;
 
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (setq package-enable-at-startup nil)
@@ -16,63 +15,57 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
-
-;; SHORTCUTS
-(global-set-key (kbd "C-c C-l") '(lambda () (interactive)(load-file user-init-file)))
-(global-set-key (kbd "M-p e") 'neotree-toggle)
-(global-set-key (kbd "C-c e") '(lambda () (interactive)(find-file user-init-file)))
-(global-set-key (kbd "C-c C-t") '(lambda () (interactive)
-                             (split-window-vertically)
-                             (other-window 1)
-                             (ansi-term "/bin/zsh")))
-                             
+                            
 ;;
-;; G E N E R A L   S E T T I N G S
+;; GENERAL SETTINGS
 ;;
 
-(display-battery-mode)
+;; Set font (I like Hermit, feel free to update)
+(add-to-list `default-frame-alist '(font . "Hermit-13"))
 
+;; Use recentf
+(recentf-mode 1)
+(setq recentf-max-menu-items 10)
+
+;; Set default directory (update it to your wanted directory)
+(setq default-directory "")
+
+;; Turn off splash screen and startup screen
 (setq inhibit-splash-screen t
       inhibit-startup-message t)
-(setq initial-scratch-message "") ; No scratch text
-(fset 'yes-or-no-p 'y-or-n-p) ; y/n instead of yes/no
-(column-number-mode t) ; show column number in mode line
-(global-linum-mode t) ; show line number
-(delete-selection-mode 1) ; Replace selection on insert
-(setq vc-follow-symlinks t) ; Always follow symlinks
-(setq custom-file "~/.emacs.d/custom.el") ; Set custom file
-(load custom-file 'noerror) ; Load custom file
-(setq org-pretty-entities t ; Make latex symbols auto display
-      org-src-fontify-natively t ; Highlight src code block in org mode
-      org-src-tab-acts-natively t ; Tabs work properly on src blocks
-      save-interprogram-paste-before-kill t ; Move last kill to sys clipboard on exit
-      visible-bell t ; Visually indicate bell
-      load-prefer-newer t ; Load newer source over compiled
-      ediff-window-setup-function 'ediff-setup-windows-plain) ; Cleaner diff
-(show-paren-mode 1) ; Show matching parens
-(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
-(custom-set-variables '(default-frame-alist '((undercorated . t)))
-											'(neo-window-position (quote right)))
 
-;; Font
-(set-frame-font "Hermit 15" nil t)
+;; No scratch file text
+(setq initial-scratch-message "")
 
-;; Indentation
-(defun setup-indentation(level)
-  (setq-default indent-tabs-mode t) ; Use spaces instead of tabs
-  (setq-default tab-width level)
-  (setq-default python-indent-offset level)
-  (setq-default c-basic-offset level) ; covers C, C++, Java
-  (setq-default javascript-indent-level level)
-  (setq-default js-indent-level level)
-  (setq-default js2-indent-level level)
-  (setq-default coffee-tab-width level)
-  (setq-default web-mode-markup-indent-offset level)
-  (setq-default web-mode-css-indent-offset level)
-  (setq-default web-mode-code-indent-offset level)
-  (setq-default css-indent-offset level)
-  )
-(setup-indentation 2)
+;; Show line numbers
+(global-display-line-numbers-mode)
+
+;; y/n instead of yes/no
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Show column number in mode line
+(column-number-mode t)
+
+;; Replace selection on insert
+(delete-selection-mode 1)
+
+;; Follow Symlinks
+(setq vc-follow-symlinks t)
+
+;; Use spaces instead of tabs
+(setq-default indent-tabs-mode nil)
+
+;; I prefer tab with of 2, you can update it to your preference
+(setq-default tab-width 2)
+
+;; show matching parenthesis to the one you are on
+(show-paren-mode 1)
+
+;; Start in maximum windows mode
+(add-to-list `initial-frame-alist '(fullscreen . maximized))
+
+;; Undecorated frames
+(add-to-list `default-frame-alist '(undecorated . t))
 
 ;; Don't show any of the graphical bars
 (menu-bar-mode -1)
@@ -80,107 +73,54 @@
 (scroll-bar-mode -1)
 (horizontal-scroll-bar-mode -1)
 
-(require 'uniquify) ; Better unique buffer names
+;; Orgmode and Latex
+(setq-default org-pretty-entities t ; Make latex symbols auto display
+      org-src-fontify-natively t ; Highlight src code block in org mode
+      org-src-tab-acts-natively t ; Tabs work properly on src blocks
+      save-interprogram-paste-before-kill t ; Move last kill to sys clipboard on exit
+      visible-bell t ; Visually indicate bell
+      load-prefer-newer t ; Load newer source over compiled
+      ediff-window-setup-function 'ediff-setup-windows-plain ; Cleaner diff
+      org-export-with-section-numbers nil ; No section numbers on export
+      org-export-with-toc nil) ; No toc on export
+
+;; Better unique buffer names
+(require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
-(require 'saveplace) ; Remember file placement
+;; Remember file placements
+(require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
-(setq org-export-with-section-numbers nil)
-(setq org-export-with-toc nil)
 
 ;;
-;; P A C K A G E S
+;; PACKAGES
 ;;
 
-;; My Enjoyed Themes
-;(use-package soothe-theme
-;  :config
-;  (load-theme 'soothe t))
-
+;; Theme
 (use-package clues-theme
-  :config
-  (load-theme 'clues t))
-
-;(use-package distinguished-theme
-;  :config
-;  (load-theme 'distinguished t))
-
-;(use-package color-theme-sanityinc-tommorrow
-;  :config
-;  (load-theme 'color-theme-sanityinc-tommorrow t))
+ :config
+ (load-theme 'clues t))
 
 ;; Auto Complete
 (use-package company
   :config
   (global-company-mode t))
 
-;; Error Checking
+;; Flycheck linting
 (use-package flycheck
   :config
   (global-flycheck-mode t))
-
-;; Project Management, Tree Structure
-(use-package neotree)
-(use-package all-the-icons)
-(setq all-the-icons-color-icons t)
-(setq all-the-icons-for-buffer t)
-(setq neo-smart-open t)
-(setq projectile-switch-project-action 'neotree-projectile-action)
-(add-hook 'neotree-mode-hook
-  (lambda()
-		(define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-		(define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
-		(define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
-		(define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
-		(define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
-		(define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
-		(define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
-		(define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
-		(define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
-(add-hook 'neo-after-create-hook (lambda (_ignored) (linum-mode -1)))
-
-;; Python Setup
-(use-package elpy
-	:ensure t
-	:init
-	(elpy-enable))
-(setq elpy-rpc-python-command "python3")
-
-;; Ansible
-(use-package ansible)
-
-;; JavaScript
-(use-package indium)
-
-;; Java Setup
-(use-package cask)
-(use-package jdee)
-
-;; C# Setup
-(use-package omnisharp
-  :after company
-  :config
-  (add-hook 'csharp-mode-hook 'omnisharp-mode)
-  (add-to-list 'company-backends 'company-omnisharp))
-
-;; Golang
-(use-package go-mode)
 
 ;; Latex Previews
 (use-package latex-preview-pane
   :config
   (latex-preview-pane-enable))
 
-;; Search
+;; SX Searching
 (use-package sx
   :bind
   ("C-c C-s" . sx-search))
-
-;; Multiple Curs
-(use-package multiple-cursors
-  :bind
-  (("C-M-c" . mc/edit-lines)))
 
 ;; Better completion at point
 (use-package ivy
@@ -206,9 +146,7 @@
   :config
   (which-key-mode))
 
-;;
-;; E V I L   M O D E
-;;
+;; EVIL (VIM)
 (use-package evil
   :init
   (setq evil-want-C-u-scroll t)
@@ -220,15 +158,31 @@
   (setq-default evil-symbol-word-search t))
 
 ;;
-;; B A C K U P S
+;; SHORTCUTS
 ;;
-(setq backup-by-copying t) ; Stop shinanigans with links
+
+(global-set-key (kbd "C-c C-l") '(lambda () (interactive)(load-file user-init-file)))
+(global-set-key (kbd "C-c e") '(lambda () (interactive)(find-file user-init-file)))
+(global-set-key "\C-c\ r" 'counsel-recentf)
+ 
+;;
+;; BACKUPS
+;;
+
+;; Stop weird things with backing up and linking
+(setq backup-by-copying t)
+
+;; Where to backup to
 (setq backup-directory-alist '((".*" . "~/.bak.emacs/backup/")))
+
 ;; Creates directory if it doesn't already exist
-(if (eq nil (file-exists-p "~/.bak.emacs/")) 
+(if (eq nil (file-exists-p "~/.bak.emacs/"))
     (make-directory "~/.bak.emacs/"))
+
 ;; Creates auto directory if it doesn't already exist
 (if (eq nil (file-exists-p "~/.bak.emacs/auto"))
     (make-directory "~/.bak.emacs/auto"))
+
 ;; backup in one place. flat, no tree structure
 (setq auto-save-file-name-transforms '((".*" "~/.bak.emacs/auto/" t)))
+
