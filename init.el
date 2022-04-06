@@ -82,6 +82,13 @@
       org-export-with-section-numbers nil ; No section numbers on export
       org-export-with-toc nil) ; No toc on export
 
+;; Pretty Symbols
+(global-prettify-symbols-mode 1)
+
+;; Have exec-path match PATH for Windows and Mac 
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
 ;;
 ;; PACKAGES
 ;;
@@ -89,9 +96,6 @@
 (use-package treemacs
   :ensure t
   :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config
   (progn
     (setq treemacs-silent-refresh t
@@ -110,7 +114,8 @@
        (treemacs-git-mode 'simple))))
   :bind
   (:map global-map
-        ("C-c f" . treemacs-select-window)))
+        ("C-c f" . treemacs-select-window)
+        ("C-x t t" . treemacs)))
 
 (use-package treemacs-evil
   :after (treemacs evil)
@@ -137,9 +142,6 @@
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
 
-;; Kotlin
-(use-package kotlin-mode)
-
 ;; Themes
 ;; (use-package clues-theme
 ;;  :config
@@ -148,20 +150,6 @@
 (use-package afternoon-theme
   :config
   (load-theme `afternoon t))
-
-;; Auto Complete via Company
-(use-package company
-  :config
-  (global-company-mode t))
-
-(use-package company-quickhelp
-  :config
-  (company-quickhelp-mode))
-
-;; Flycheck linting
-(use-package flycheck
-  :config
-  (global-flycheck-mode t))
 
 ;; Latex Previews
 (use-package latex-preview-pane
@@ -197,11 +185,6 @@
   :config
   (which-key-mode))
 
-;; Disable Mouse
-(use-package disable-mouse
-  :config
-  (global-disable-mouse-mode))
-
 ;; Evil (vim)
 (use-package evil
   :init
@@ -212,6 +195,76 @@
   (setq evil-split-window-below t)
   (setq evil-vsplit-window-right t)
   (setq-default evil-symbol-word-search t))
+
+;;
+;; Languages, Auto Complete and Linting
+;;
+
+;; Kotlin
+(use-package kotlin-mode
+  :ensure t)
+
+;; Auto Complete via Company
+(use-package company
+  :ensure t
+  :config
+  (setq company-tooltip-align-annotations t)
+  (global-company-mode 1))
+
+(use-package company-box
+  :ensure t
+  :hook (company-mode . company-box-mode)
+  :config (add-to-list 'company-box-frame-parameters '(font . "Hermit-16")))
+
+(use-package company-quickhelp
+  :ensure t
+  :config
+  (company-quickhelp-mode))
+
+;; Flycheck linting
+(use-package flycheck
+  :ensure t
+  :config
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (setq flycheck-check-syntax-automatically `(save mode-enabled)))
+
+;; WEB DEV SETUP START
+
+(use-package rjsx-mode
+  :ensure t)
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook
+  ((typescript-mode . tide-setup)
+   (js2-mode . tide-setup)
+   (typescript-mode . tide-hl-identifier-mode)
+   (before-save . tide-format-before-save))
+  :config
+  (flycheck-add-mode 'typescript-tide 'web-mode)
+  (flycheck-add-mode 'javascript-tide 'web-mode)
+  (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
+  (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+  (setq tide-always-show-documentation t))
+
+(use-package web-mode
+  :ensure t
+  :after (typescript-mode tide company flycheck)
+  :hook (web-mode . (lambda () (when (or ((string-equal "tsx" (file-name-extension buffer-file-name))
+                                     (string-equal "jsx" (file-name-extension buffer-file-name)))
+                                    (tide-setup)))))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode)))
+
+;; WEB DEV SETUP END
 
 ;;
 ;; SHORTCUTS
@@ -248,7 +301,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(kotlin-mode disable-mouse afternoon-theme company-quickhelp-terminal treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil treemacs which-key use-package sx smex org-bullets omnisharp neotree latex-preview-pane jdee indium go-mode exec-path-from-shell evil elpy counsel clues-theme cask ansible all-the-icons)))
+   '(javascript-eslint typescript-eslint lsp-mode tide tide-mode web-mode rjsx-mode typescript-mode kotlin-mode disable-mouse afternoon-theme company-quickhelp-terminal treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil treemacs which-key use-package sx smex org-bullets omnisharp neotree latex-preview-pane jdee indium go-mode exec-path-from-shell evil elpy counsel clues-theme cask ansible all-the-icons)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
