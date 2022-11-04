@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=/opt/gradle/gradle-7.3.1/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-export GOPATH=$HOME/go:/mnt/h/Dev/GoProjects/go
+export GOPATH=$HOME/go
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/faiz/.oh-my-zsh"
@@ -8,14 +8,11 @@ export ZSH="/home/faiz/.oh-my-zsh"
 # Fix ls colors
 export LS_COLORS="ow=01;36;40"
 
-# java home
-#export JAVA_HOME="/mnt/c/Users/The\ Beast/.jdks/openjdk-17.0.1"
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="gnzh"
+ZSH_THEME="uysal"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -48,7 +45,7 @@ ZSH_THEME="gnzh"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
