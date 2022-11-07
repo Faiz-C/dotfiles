@@ -3,7 +3,7 @@ export PATH=/opt/gradle/gradle-7.3.1/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 export GOPATH=$HOME/go
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/faiz/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Fix ls colors
 export LS_COLORS="ow=01;36;40"
@@ -103,3 +103,4 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias k="kubectl"
