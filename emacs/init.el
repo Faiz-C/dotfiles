@@ -20,8 +20,8 @@
 ;; GENERAL SETTINGS
 ;;
 
-;; Set font (I like Hermit, feel free to update)
-(set-frame-font "Hermit-16")
+;; Set font (I like Fira Code, feel free to change)
+(set-frame-font "Fira Code-16")
 
 ;; Use recentf
 (recentf-mode 1)
@@ -92,6 +92,19 @@
 ;;
 ;; PACKAGES
 ;;
+
+(use-package zoom
+  :ensure t
+  :config
+  (custom-set-variables
+   `(zoom-mode t)
+   `(zoom-size `(0.80 . 0.80))))
+
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window)
+  (global-set-key (kbd "C-x o") 'ace-window))
 
 (use-package treemacs
   :ensure t
@@ -200,71 +213,81 @@
 ;; Languages, Auto Complete and Linting
 ;;
 
+;; YAML
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list `auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
 ;; Kotlin
 (use-package kotlin-mode
   :ensure t)
 
-;; Auto Complete via Company
+;; Auto Complete via Company Start
 (use-package company
   :ensure t
   :config
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0)
   (setq company-tooltip-align-annotations t)
   (global-company-mode 1))
 
 (use-package company-box
   :ensure t
   :hook (company-mode . company-box-mode)
-  :config (add-to-list 'company-box-frame-parameters '(font . "Hermit-16")))
+  :config (add-to-list 'company-box-frame-parameters '(font . "Fira Code-16")))
 
 (use-package company-quickhelp
   :ensure t
-  :config
-  (company-quickhelp-mode))
+  :config (company-quickhelp-mode))
+
+;; Company End
 
 ;; Flycheck linting
 (use-package flycheck
   :ensure t
   :config
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (setq flycheck-check-syntax-automatically `(save mode-enabled)))
+  (global-flycheck-mode))
 
-;; WEB DEV SETUP START
-
-(use-package rjsx-mode
-  :ensure t)
-
-(use-package yasnippet
+;; LSP Start
+(use-package lsp-mode
   :ensure t
-  :config
-  (yas-global-mode 1))
-
-(use-package tide
-  :ensure t
-  :after (typescript-mode company flycheck)
+  :after (treemacs)
+  :init (setq lsp-keymap-prefix "C-c l")
   :hook
-  ((typescript-mode . tide-setup)
-   (js2-mode . tide-setup)
-   (typescript-mode . tide-hl-identifier-mode)
-   (before-save . tide-format-before-save))
-  :config
-  (flycheck-add-mode 'typescript-tide 'web-mode)
-  (flycheck-add-mode 'javascript-tide 'web-mode)
-  (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
-  (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
-  (setq tide-always-show-documentation t))
+  ((python-mode . lsp)
+   (typescript-mode . lsp)
+   (javascript-mode . lsp)
+   (kotlin-mode . lsp)
+   (java-mode . lsp)
+   (js2-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
 
+(use-package lsp-ivy
+  :ensure t
+  :commands
+  (lsp-ivy-workspace-symbol))
+
+(use-package lsp-ui
+  :ensure t
+  :commands (lsp-ui-mode))
+
+(use-package lsp-treemacs
+  :ensure t
+  :after (lsp-mode treemacs)
+  :config
+  (lsp-treemacs-sync-mode 1))
+;; LSP End
+
+;; Web Mode for TSX and JSX
 (use-package web-mode
   :ensure t
-  :after (typescript-mode tide company flycheck)
-  :hook (web-mode . (lambda () (when (or ((string-equal "tsx" (file-name-extension buffer-file-name))
-                                     (string-equal "jsx" (file-name-extension buffer-file-name)))
-                                    (tide-setup)))))
-  :config
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode)))
-
-;; WEB DEV SETUP END
+  :mode (("\\.jsx\\'" . web-mode) 
+         ("\\.tsx\\'" . web-mode) 
+         ("\\.vue\\'" . web-mode)
+	       ("\\.json\\'" . web-mode))
+  :commands web-mode)
 
 ;;
 ;; SHORTCUTS
@@ -301,7 +324,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(javascript-eslint typescript-eslint lsp-mode tide tide-mode web-mode rjsx-mode typescript-mode kotlin-mode disable-mouse afternoon-theme company-quickhelp-terminal treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil treemacs which-key use-package sx smex org-bullets omnisharp neotree latex-preview-pane jdee indium go-mode exec-path-from-shell evil elpy counsel clues-theme cask ansible all-the-icons)))
+   '(fira-code-mode zoom company-tabnine company-lsp lsp-treemacs lsp-ui lsp-ivy javascript-eslint typescript-eslint lsp-mode tide tide-mode web-mode rjsx-mode typescript-mode kotlin-mode disable-mouse afternoon-theme company-quickhelp-terminal treemacs-magit treemacs-icons-dired treemacs-projectile treemacs-evil treemacs which-key use-package sx smex org-bullets omnisharp neotree latex-preview-pane jdee indium go-mode exec-path-from-shell evil elpy counsel clues-theme cask ansible all-the-icons))
+ '(zoom-mode t nil (zoom))
+ '(zoom-size `(0.8 . 0.8)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
