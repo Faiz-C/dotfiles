@@ -124,7 +124,7 @@
     --uc-border-radius: 0;
 
     /* dynamic url bar width settings */
-    --uc-urlbar-width: clamp(200px, 30vw, 550px);
+    --uc-urlbar-width: clamp(200px, 30vw, 650px);
 
     /* dynamic tab width settings */
     --uc-active-tab-width:   clamp(100px, 20vw, 250px);
