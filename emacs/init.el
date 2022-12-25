@@ -63,12 +63,12 @@
 
 ;; Fullscreen based on OS
 (cond ((eq system-type `darwin) (set-frame-parameter nil `fullscreen `fullboth)) ;; Real fullscreen on Mac
-      ((eq system-type `windows-nt) (progn (add-to-list `initial-frame-alist '(fullscreen . maximized))
-                                           (add-to-list `default-frame-alist '(undecorated . t))
-                                           (menu-bar-mode -1)
-                                           (tool-bar-mode -1)
-                                           (scroll-bar-mode -1)
-                                           (horizontal-scroll-bar-mode -1))))
+      ((or (eq system-type `windows-nt) (eq system-type `gnu/linux)) (progn (add-to-list `initial-frame-alist '(fullscreen . maximized))
+                                                                            (add-to-list `default-frame-alist '(undecorated . t))
+                                                                            (menu-bar-mode -1)
+                                                                            (tool-bar-mode -1)
+                                                                            (scroll-bar-mode -1)
+                                                                            (horizontal-scroll-bar-mode -1))))
 
 ;; Orgmode and Latex
 (setq-default org-pretty-entities t ; Make latex symbols auto display
@@ -85,8 +85,7 @@
 (global-prettify-symbols-mode 1)
 
 ;; Have exec-path match PATH for Windows and Mac 
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+(when (and (eq system-type `windows-nt) (memq window-system '(mac ns x))) (exec-path-from-shell-initialize))
 
 ;;
 ;; PACKAGES
