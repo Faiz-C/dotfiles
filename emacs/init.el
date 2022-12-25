@@ -61,15 +61,14 @@
 ;; show matching parenthesis to the one you are on
 (show-paren-mode 1)
 
-(cond ((eq system-type `darwin) ;; Real Full Screen for Mac OSX
-       (set-frame-parameter nil `fullscreen `fullboth))
-      ((or (eq system-type `windows-nt) (eq system-type `cygwin) ;; Real Full Screen for Windows
-           (progn (add-to-list `initial-frame-alist '(fullscreen . maximized))
-                  (add-to-list `default-frame-alist '(undecorated . t))
-                  (menu-bar-mode -1)
-                  (tool-bar-mode -1)
-                  (scroll-bar-mode -1)
-                  (horizontal-scroll-bar-mode -1)))))
+;; Fullscreen based on OS
+(cond ((eq system-type `darwin) (set-frame-parameter nil `fullscreen `fullboth)) ;; Real fullscreen on Mac
+      ((eq system-type `windows-nt) (progn (add-to-list `initial-frame-alist '(fullscreen . maximized))
+                                           (add-to-list `default-frame-alist '(undecorated . t))
+                                           (menu-bar-mode -1)
+                                           (tool-bar-mode -1)
+                                           (scroll-bar-mode -1)
+                                           (horizontal-scroll-bar-mode -1))))
 
 ;; Orgmode and Latex
 (setq-default org-pretty-entities t ; Make latex symbols auto display

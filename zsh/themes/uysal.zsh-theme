@@ -27,12 +27,12 @@ ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[yellow]%} Φ %{$fg_bold[blue]%}"
 
 # Prompt variables
 setopt prompt_subst
-PROMPT=$'%B%{$FG[040]%}[%n]%{$reset_color%} Π '
+PROMPT=$'%B%{$FG[040]%}[%n]%{$reset_color%} Ʃ '
 PROMPT+='%{$FG[033]%}%B[%~/]%{$reset_color%} '
 PROMPT+='$(git_prompt_info)'
 PROMPT+='
 %{$fg[cyan]%}-->%{$reset_color%} '
-# # current-time - status Π Ξ
+# # current-time - status Ʃ Ξ
 RPROMPT="%* %(?.%{$fg[cyan]%}✓.%{$fg[red]%}✗%{$reset_color%})"
 
 
