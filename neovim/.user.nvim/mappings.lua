@@ -11,11 +11,7 @@ require('legendary').keymaps({
   { 'k', 'gk' },
 
   -- Buffer navigation keybinds
-  { '<leader>k', function() require('bufdelete').bufwipeout(0) end },
-  { '<leader>b', alt_buf_with_fallback },
-  { '<C-^>', alt_buf_with_fallback },
-
-
+  { '<leader>k', ':bd<cr>' },
   { '<leader>n', narrow_to_function },
 
   -- Don't lose visual selection with < >
@@ -27,10 +23,7 @@ require('legendary').keymaps({
 
   -- Fzf
   { '<leader>f', fzf.files },
-  { '<leader>m', fzf.buffers },
   { '<leader>g', fzf.live_grep },
-  { '<leader>r', fzf.resume },
-  { '<leader>e', function() fzf.files({ cwd = get_buf_dir()}) end },
   { '<M-x>', fzf.commands },
 
   -- Help

@@ -29,9 +29,9 @@ use {
 -- Telescope
 -- Borrowed from https://github.com/nvim-lua/kickstart.nvim
 use {
-  'nvim-telescope/telescope.nvim', 
-  tag = '0.1.0',
-  requires = { {'nvim-lua/plenary.nvim'} },
+  'nvim-telescope/telescope.nvim',
+  branch = '0.1.x',
+  requires = { { 'nvim-lua/plenary.nvim' } },
   config = function()
     require('telescope').setup {
       defaults = {
@@ -41,21 +41,27 @@ use {
             ['<C-d>'] = false,
           },
         },
+        file_ignore_patterns = {
+          "^.git/",
+        },
+      },
+      pickers = {
+        find_files = {
+          theme = "dropdown",
+          hidden = true,
+          no_ignore = false,
+        },
+      },
+      extensions = {
+        file_browser = {
+          theme = "dropdown",
+          hidden = true,
+        },
       },
     }
 
-    pcall(require('telescope').load_extension, 'fzf')
-
     vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
     vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-    vim.keymap.set('n', '<leader>/', function()
-      -- You can pass additional configuration to telescope to change theme, layout, etc.
-      require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        winblend = 10,
-        previewer = false,
-      })
-    end, { desc = '[/] Fuzzily search in current buffer]' })
-
     vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
     vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
     vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
@@ -64,12 +70,60 @@ use {
   end
 }
 
-use {
-  "nvim-telescope/telescope-file-browser.nvim",
+-- Telescope Fzf Native
+-- Borrowed from https://github.com/nvim-lua/kickstart.nvim
+use { 
+  'nvim-telescope/telescope-fzf-native.nvim', 
+  run = 'make', 
+  cond = vim.fn.executable 'make' == 1,
   config = function()
-    require('telescope').load_extension 'file_browser'
-    vim.keymap.set('n', '<leader>fb', ':Telescope file_browser<CR>', { noremap = true })
+    require('telescope').load_extension('fzf') 
   end
 }
 
+-- Telescope File Browser
+use {
+  "nvim-telescope/telescope-file-browser.nvim",
+  requires = {
+    'nvim-tree/nvim-web-devicons', -- optional, for file icons
+  },
+  config = function()
+    require('telescope').load_extension('file_browser')
+    vim.keymap.set('n', '<leader>fb', '<cmd>Telescope file_browser<cr>', { noremap = true })
+  end
+}
 
+-- Nvim Tree
+use {
+  'nvim-tree/nvim-tree.lua',
+  requires = {
+    'nvim-tree/nvim-web-devicons', -- optional, for file icons
+  },
+  config = function()
+    require('nvim-tree').setup({
+      view = {
+        adaptive_size = true,
+        mappings = {
+          list = {
+            { key = "u", action = "dir_up" },
+          },
+        },
+      },
+    })
+    vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<cr>', { noremap = true })
+  end
+}
+
+-- Nvim Workspaces
+use {
+  'natecraddock/workspaces.nvim',
+  config = function()
+    require("workspaces").setup({
+      cd_type = "local",
+      hooks = {
+        open = { "NvimTreeOpen", "Telescope file_browser" },
+      }
+    })
+    vim.keymap.set('n', '<leader>wo', '<cmd>WorkspacesOpen<cr>', { noremap = true })
+  end
+}
