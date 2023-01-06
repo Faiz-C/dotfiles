@@ -127,3 +127,26 @@ use {
     vim.keymap.set('n', '<leader>wo', '<cmd>WorkspacesOpen<cr>', { noremap = true })
   end
 }
+
+-- Nvim Neorg
+use {
+  "nvim-neorg/neorg",
+  run = ":Neorg sync-parsers", -- This is the important bit!
+  config = function()
+    require("neorg").setup {
+      load = {
+        ["core.defaults"] = {},
+        ["core.norg.dirman"] = {
+          config = {
+            workspaces = {
+              notes = "~/notes",
+            }
+          }
+        }
+      }
+    }
+  end
+}
+
+-- Nvim Nabla (Scientific Notation)
+use { 'jbyuki/nabla.nvim' }
