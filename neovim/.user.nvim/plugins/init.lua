@@ -1,20 +1,5 @@
 local use = require('packer').use
 
--- Night Owl Theme
--- use { 'Julpikar/night-owl.nvim',
---  config = function()
---    vim.cmd('colorscheme night-owl')
---  end
--- }
-
--- Nightfox Carbonfox Theme
---use {
---  'EdenEast/nightfox.nvim',
---  config = function()
---    vim.cmd('colorscheme carbonfox')
---  end
---}
-
 -- Tokyo Night (Night) Theme
 use {
   'folke/tokyonight.nvim',
@@ -36,6 +21,9 @@ use {
     require('telescope').setup {
       defaults = {
         mappings = {
+          n = {
+            ['d'] = require('telescope.actions').delete_buffer,
+          },
           i = {
             ['<C-u>'] = false,
             ['<C-d>'] = false,
@@ -47,14 +35,12 @@ use {
       },
       pickers = {
         find_files = {
-          theme = "dropdown",
           hidden = true,
           no_ignore = false,
         },
       },
       extensions = {
         file_browser = {
-          theme = "dropdown",
           hidden = true,
         },
       },
@@ -89,7 +75,7 @@ use {
   },
   config = function()
     require('telescope').load_extension('file_browser')
-    vim.keymap.set('n', '<leader>fb', '<cmd>Telescope file_browser<cr>', { noremap = true })
+    vim.keymap.set('n', '<leader>sj', '<cmd>Telescope file_browser<cr>', { noremap = true })
   end
 }
 
@@ -114,17 +100,26 @@ use {
   end
 }
 
--- Nvim Workspaces
+-- Nvim Projects
 use {
-  'natecraddock/workspaces.nvim',
+  'ahmedkhalf/project.nvim',
   config = function()
-    require("workspaces").setup({
-      cd_type = "local",
-      hooks = {
-        open = { "NvimTreeOpen", "Telescope file_browser" },
-      }
+    require('project_nvim').setup {
+      show_hidden = true,
+      scope_chdir = 'win',
+    }
+
+    require('nvim-tree').setup({
+      sync_root_with_cwd = true,
+      respect_buf_cwd = true,
+      update_focused_file = {
+        enable = true,
+        update_root = true,
+      },
     })
-    vim.keymap.set('n', '<leader>wo', '<cmd>WorkspacesOpen<cr>', { noremap = true })
+
+    require('telescope').load_extension('projects')
+    vim.keymap.set('n', '<leader>sp', '<cmd>Telescope projects<cr>', { noremap = true })
   end
 }
 
@@ -139,7 +134,7 @@ use {
         ["core.norg.dirman"] = {
           config = {
             workspaces = {
-              notes = "~/notes",
+              notes = "~/org/notes",
             }
           }
         }
@@ -149,4 +144,57 @@ use {
 }
 
 -- Nvim Nabla (Scientific Notation)
-use { 'jbyuki/nabla.nvim' }
+use {
+  'jbyuki/nabla.nvim'
+}
+
+-- Nvim Zen Mode
+use {
+  "folke/zen-mode.nvim",
+  config = function()
+    require("zen-mode").setup {
+      width = .95
+    }
+    vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { noremap = true })
+  end
+}
+
+-- Nvim Bufferline
+use {
+  'akinsho/bufferline.nvim', 
+  tag = "v3.*", 
+  requires = 'nvim-tree/nvim-web-devicons',
+  config = function()
+    require('bufferline').setup {}
+  end
+}
+
+-- Nvim Workspaces (lightweight alternative to Projects)
+-- use {
+--  'natecraddock/workspaces.nvim',
+--  config = function()
+--    require("workspaces").setup({
+--      cd_type = "local",
+--      hooks = {
+--        open = { "NvimTreeOpen", "Telescope file_browser" },
+--      }
+--    })
+--    vim.keymap.set('n', '<leader>wo', '<cmd>WorkspacesOpen<cr>', { noremap = true })
+--  end
+-- }
+
+-- Night Owl Theme
+-- use { 'Julpikar/night-owl.nvim',
+--  config = function()
+--    vim.cmd('colorscheme night-owl')
+--  end
+-- }
+
+-- Nightfox Carbonfox Theme
+--use {
+--  'EdenEast/nightfox.nvim',
+--  config = function()
+--    vim.cmd('colorscheme carbonfox')
+--  end
+--}
+

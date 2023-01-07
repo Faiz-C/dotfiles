@@ -11,7 +11,7 @@ require('legendary').keymaps({
   { 'k', 'gk' },
 
   -- Buffer navigation keybinds
-  { '<leader>k', ':bd<cr>' },
+  { '<leader>k', '<cmd>bd<cr>' },
   { '<leader>n', narrow_to_function },
 
   -- Don't lose visual selection with < >
@@ -19,14 +19,11 @@ require('legendary').keymaps({
   { '>', '>gv', mode = { 'x' } },
 
   -- Format
-  { '<leader>F', ':Neoformat<cr>', mode = { 'n', 'v' } },
+  { '<leader>F', '<cmd>Neoformat<cr>', mode = { 'n', 'v' } },
 
   -- Fzf
-  { '<leader>f', fzf.files },
-  { '<leader>g', fzf.live_grep },
   { '<M-x>', fzf.commands },
 
   -- Help
-  { '<C-h>f', fzf.help_tags },
   { '<C-h>k', '<cmd>Legendary<cr>' },
 })
