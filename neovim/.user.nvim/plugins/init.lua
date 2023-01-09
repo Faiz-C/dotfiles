@@ -21,9 +21,6 @@ use {
     require('telescope').setup {
       defaults = {
         mappings = {
-          n = {
-            ['d'] = require('telescope.actions').delete_buffer,
-          },
           i = {
             ['<C-u>'] = false,
             ['<C-d>'] = false,
@@ -166,6 +163,14 @@ use {
   requires = 'nvim-tree/nvim-web-devicons',
   config = function()
     require('bufferline').setup {}
+  end
+}
+
+-- Nvim Autopairs
+use {
+  "windwp/nvim-autopairs",
+  config = function()
+    require("nvim-autopairs").setup {}
   end
 }
 
