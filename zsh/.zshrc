@@ -1,5 +1,4 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=/opt/gradle/gradle-7.5.1/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 export GOPATH=$HOME/go
 
 # Path to your oh-my-zsh installation.
