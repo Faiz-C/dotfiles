@@ -55,12 +55,12 @@ use {
 
 -- Telescope Fzf Native
 -- Borrowed from https://github.com/nvim-lua/kickstart.nvim
-use { 
-  'nvim-telescope/telescope-fzf-native.nvim', 
-  run = 'make', 
+use {
+  'nvim-telescope/telescope-fzf-native.nvim',
+  run = 'make',
   cond = vim.fn.executable 'make' == 1,
   config = function()
-    require('telescope').load_extension('fzf') 
+    require('telescope').load_extension('fzf')
   end
 }
 
@@ -128,13 +128,34 @@ use {
     require("neorg").setup {
       load = {
         ["core.defaults"] = {},
+        ["core.fs"] = {},
+        ["core.presenter"] = {
+          config = {
+            zen_mode = "zen-mode"
+          },
+        },
+        ["core.export"] = {},
+        ["core.norg.concealer"] = {
+          config = {
+            folds = false,
+            width = "content",
+            preset = "diamond",
+          },
+        },
+        ["core.export.markdown"] = {},
+        ["core.norg.completion"] = {
+          config = {
+            engine = "nvim-cmp"
+          },
+        },
         ["core.norg.dirman"] = {
           config = {
             workspaces = {
-              notes = "~/org/notes",
+              notes = "~/notes",
             }
           }
-        }
+        },
+        ["core.norg.manoeuvre"] = {},
       }
     }
   end
@@ -150,7 +171,9 @@ use {
   "folke/zen-mode.nvim",
   config = function()
     require("zen-mode").setup {
-      width = .95
+      window = {
+        width = .85
+      }
     }
     vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { noremap = true })
   end
@@ -158,8 +181,8 @@ use {
 
 -- Nvim Bufferline
 use {
-  'akinsho/bufferline.nvim', 
-  tag = "v3.*", 
+  'akinsho/bufferline.nvim',
+  tag = "v3.*",
   requires = 'nvim-tree/nvim-web-devicons',
   config = function()
     require('bufferline').setup {}
@@ -202,4 +225,3 @@ use {
 --    vim.cmd('colorscheme carbonfox')
 --  end
 --}
-

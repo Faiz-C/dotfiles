@@ -26,6 +26,12 @@ require('legendary').keymaps({
   -- Fzf
   { '<M-x>', fzf.commands },
 
+  -- Clearing search
+  { '<leader>cl', '<cmd>noh<cr>' },
+
+  -- Pane navigation
+  { '<leader>p', '<C-W>w' },
+
   -- Help
   { '<C-h>k', '<cmd>Legendary<cr>' },
 })
