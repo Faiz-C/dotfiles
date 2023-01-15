@@ -1,0 +1,64 @@
+""" Settings
+set expandtab
+set smartindent
+set so=10
+set incsearch
+set idearefactormode=keep
+set ideajoin
+set surround
+
+""" Map leader to space
+nnoremap <Space> <nop>
+nnoremap <Esc> <nop>
+let mapleader=" "
+
+""" Make j and k behave properly for wrapped lines
+nmap j gj
+nmap k gk
+
+""" Tab and Pane navigations
+nmap <leader>h <action>(PreviousTab)
+nmap <leader>l <action>(NextTab)
+nmap <leader>k <action>(CloseEditor)
+nmap <leader>p <C-W>w
+
+""" Buffer Navigation
+nmap <leader><space> <action>(Switcher)
+
+""" Lookup Files (matches bindings for Telescope find_files)
+nmap <leader>sf <action>(GotoFile)
+
+""" Goto X
+nmap <leader>gd <action>(GotoDeclaration)
+nmap <leader>gi <action>(GotoImplementation)
+nmap <leader>gs <action>(GotoSuperMethod)
+
+""" Reformatting code
+nmap <leader>F <action>(ReformatCode)
+vmap <leader>F <action>(ReformatCode)
+
+""" Refactoring
+nmap <leader>r <action>(RenameElement)
+nmap <leader>R <action>(ChangeSignature)
+
+""" System clipboard copying and pasting
+nmap <leader>P "+p
+nmap <leader>y "+yy
+vmap <leader>P "+p
+vmap <leader>y "+y
+
+""" File structure info popup for Class/Object/etc..
+nmap <leader>o <action>(FileStructurePopup)
+
+""" IDE Tool Integrations
+nmap <leader>tp <action>(Project)
+nmap <leader>tr <action>(Run)
+nmap <leader>td <action>(Debug)
+nmap <leader>b <action>(ToggleLineBreakpoint)
+
+""" Gradle task runner
+nmap <leader>G <action>(Gradle.ExecuteTask)
+
+""" Error Checking
+nmap <leader>d <action>(ShowErrorDescription)
+nmap <leader>e <action>(GotoNextError)

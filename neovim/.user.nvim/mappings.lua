@@ -13,8 +13,8 @@ require('legendary').keymaps({
   -- Buffer navigation keybinds
   { '<leader>k', '<cmd>bd<cr>' },
   { '<leader>n', narrow_to_function },
-  { '<leader>ll', '<cmd>bn<cr>' },
-  { '<leader>hh', '<cmd>bp<cr>' },
+  { '<leader>l', '<cmd>bn<cr>' },
+  { '<leader>h', '<cmd>bp<cr>' },
 
   -- Don't lose visual selection with < >
   { '<', '<gv', mode = { 'x' } },
