@@ -25,13 +25,13 @@ nmap <leader>p <C-W>w
 """ Buffer Navigation
 nmap <leader><space> <action>(Switcher)
 
-""" Lookup Files (matches bindings for Telescope find_files)
+""" Goto X/Find X
 nmap <leader>sf <action>(GotoFile)
-
-""" Goto X
 nmap <leader>gd <action>(GotoDeclaration)
 nmap <leader>gi <action>(GotoImplementation)
 nmap <leader>gs <action>(GotoSuperMethod)
+nmap <leader>gu <action>(ShowUsages)
+nmap <leader>gs <action>(SelectIn)
 
 """ Reformatting code
 nmap <leader>F <action>(ReformatCode)
@@ -54,11 +54,11 @@ nmap <leader>o <action>(FileStructurePopup)
 nmap <leader>tp <action>(Project)
 nmap <leader>tr <action>(Run)
 nmap <leader>td <action>(Debug)
+nmap <leader>th <action>(HideAllWindows)
 nmap <leader>b <action>(ToggleLineBreakpoint)
-
-""" Gradle task runner
 nmap <leader>G <action>(Gradle.ExecuteTask)
 
 """ Error Checking
 nmap <leader>d <action>(ShowErrorDescription)
 nmap <leader>e <action>(GotoNextError)
+
