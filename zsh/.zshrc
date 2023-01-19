@@ -13,5 +13,9 @@ source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Set default terminal editor
+export EDITOR=nvim
+export VISUAL="$EDITOR"
+
 # Alias'
 alias k="kubectl"
