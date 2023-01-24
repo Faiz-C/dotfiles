@@ -21,7 +21,7 @@ require('legendary').keymaps({
   { '>', '>gv', mode = { 'x' } },
 
   -- Format
-  { '<leader>F', '<cmd>Neoformat<cr>', mode = { 'n', 'v' } },
+  { '<leader>f', '<cmd>Neoformat<cr>', mode = { 'n', 'v' } },
 
   -- Fzf
   { '<M-x>', fzf.commands },
