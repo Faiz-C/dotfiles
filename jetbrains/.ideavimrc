@@ -34,8 +34,8 @@ nmap <leader>gu <action>(ShowUsages)
 nmap <leader>gs <action>(SelectIn)
 
 """ Reformatting code
-nmap <leader>F <action>(ReformatCode)
-vmap <leader>F <action>(ReformatCode)
+nmap <leader>f <action>(ReformatCode)
+vmap <leader>f <action>(ReformatCode)
 
 """ Refactoring
 nmap <leader>r <action>(RenameElement)

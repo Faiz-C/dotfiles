@@ -24,7 +24,7 @@ function user_on_lsp_attach()
       { 'gr', fzf.lsp_references, opts = map_opts },
       { '[d', vim.diagnostic.goto_prev, opts = map_opts },
       { ']d', vim.diagnostic.goto_next, opts = map_opts },
-      { '<leader>F', {
+      { '<leader>f', {
              n = '<cmd>lua vim.lsp.buf.formatting()<cr>',
              v = ':lua vim.lsp.buf.range_formatting()<cr>',
          },
