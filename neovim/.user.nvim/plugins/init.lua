@@ -163,7 +163,10 @@ use {
 
 -- Nvim Nabla (Scientific Notation)
 use {
-  'jbyuki/nabla.nvim'
+  'jbyuki/nabla.nvim',
+  config = function()
+    vim.keymap.set('n', '<leader>n', require('nabla').toggle_virt)
+  end
 }
 
 -- Nvim Zen Mode
