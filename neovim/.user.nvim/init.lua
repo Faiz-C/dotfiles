@@ -12,7 +12,7 @@ function user_on_lsp_attach()
   local fzf = require('fzf-lua')
 
   local jump_to_singlify = function(f)
-      return function() f({ jump_to_single_result = true }) end
+    return function() f({ jump_to_single_result = true }) end
   end
 
   require('legendary').keymaps({
@@ -37,4 +37,16 @@ function user_on_lsp_attach()
 end
 
 user_lsp_overrides = {
+  pylsp = {
+    settings = {
+      pylsp = {
+        plugins = {
+          pycodestyle={
+            ignore={'E501', 'W391'},
+            indentSize=2,
+          },
+        },
+      },
+    },
+  },
 }
