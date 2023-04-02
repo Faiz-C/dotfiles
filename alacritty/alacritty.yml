@@ -3,7 +3,7 @@ window:
   startup_mode: Windowed
 
 font:
-  size: 14.0
+  size: 13.0
   normal:
     family: FiraCode Nerd Font
     style: Medium
