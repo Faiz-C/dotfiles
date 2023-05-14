@@ -29,7 +29,7 @@ nmap <leader><space> <action>(Switcher)
 nmap <leader>sf <action>(GotoFile)
 nmap <leader>gd <action>(GotoDeclaration)
 nmap <leader>gi <action>(GotoImplementation)
-nmap <leader>gs <action>(GotoSuperMethod)
+nmap <leader>gm <action>(GotoSuperMethod)
 nmap <leader>gu <action>(ShowUsages)
 nmap <leader>gs <action>(SelectIn)
 
