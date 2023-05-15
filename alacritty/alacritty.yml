@@ -16,7 +16,7 @@ cursor:
     shape: Underline
 
 shell:
-  program: wsl
+  program: wsl ~
 
 # Colors (Tokyo Night, checkout https://github.com/zatchheems/tokyo-night-alacritty-theme)
 colors:

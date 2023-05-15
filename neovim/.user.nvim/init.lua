@@ -1,5 +1,5 @@
 function user_install_plugins()
-  require('plugins')
+  return require('plugins')
 end
 
 function user_config()
@@ -31,7 +31,6 @@ function user_on_lsp_attach()
          opts = map_opts
       },
       { 'gx', vim.lsp.buf.code_action, opts = map_opts },
-
       { 'gR', vim.lsp.buf.rename, opts = map_opts },
   })
 end
