@@ -2,6 +2,7 @@ local fzf = require('fzf-lua')
 
 require('legendary').keymaps({
   { '<Space>', '<nop>' },
+  { '<C-k>', '<nop>' },
 
   -- Fast saving
   { '<leader>w', ':<C-u>silent update<cr>' },
@@ -34,4 +35,8 @@ require('legendary').keymaps({
 
   -- Help
   { '<C-h>k', '<cmd>Legendary<cr>' },
+
+  -- Terminal
+  { '<Esc>', '<C-\\><C-n>', mode = { 't' }},
+  { '<leader>T', open_toggle_term }
 })

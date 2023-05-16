@@ -1,4 +1,3 @@
-export GOPATH=$HOME/go
 export ZSH="$HOME/.oh-my-zsh"
 
 # Fix ls colors
@@ -16,6 +15,23 @@ source $ZSH/oh-my-zsh.sh
 # Set default terminal editor
 export EDITOR=nvim
 export VISUAL="$EDITOR"
+
+# PNPM HOME
+export PNPM_HOME="$HOME/.pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# GOPATH to be in home directory
+export GOPATH=$HOME/go
+
+# RUBY
+export RUBY_HOME="$HOME/.local/share/gem/ruby/3.0.0/bin"
+case ":$PATH:" in
+  *":$RUBY_HOME:"*) ;;
+  *) export PATH="$RUBY_HOME:$PATH" ;;
+esac
 
 # Alias'
 alias k="kubectl"

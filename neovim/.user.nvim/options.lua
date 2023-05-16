@@ -2,7 +2,7 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- Python is annoying and is overrides my wanted 2 spaces for indenting
+-- Python is annoying and overrides my wanted 2 spaces for indenting
 vim.g.python_recommended_style = 0
 
 -- set termguicolors to enable highlight groups

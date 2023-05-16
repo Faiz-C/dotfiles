@@ -88,7 +88,8 @@ return {
     "folke/noice.nvim",
     dependencies = {
       "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify"
+      "rcarriga/nvim-notify",
+      "nvim-treesitter/nvim-treesitter",
     },
     config = function()
       require("noice").setup {
@@ -122,23 +123,16 @@ return {
         }
       }
 
-      vim.keymap.set("c", "<s-Enter>",
-        function()
-          require("noice").redirect(vim.fn.getcmdline())
-        end,
-        { desc = "Redirect Cmdline" }
-      )
-
       vim.keymap.set({"n", "i", "s"}, "<c-j>",
         function()
           if not require("noice.lsp").scroll(4) then
-            return "<c-f>"
+            return "<c-j>"
           end
-        end, 
+        end,
         { silent = true, expr = true }
       )
 
-      vim.keymap.set({"n", "i", "s"}, "<c-k>",
+      vim.keymap.set({"n", "i", "s"}, "<c-b>",
         function()
           if not require("noice.lsp").scroll(-4) then
             return "<c-b>"
@@ -208,7 +202,7 @@ return {
   {
     "nvim-telescope/telescope-file-browser.nvim",
     dependencies = {
-      'nvim-tree/nvim-web-devicons', -- optional, for file icons
+      "nvim-tree/nvim-web-devicons"
     },
     config = function()
       require('telescope').load_extension('file_browser')
@@ -220,7 +214,7 @@ return {
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = {
-      'nvim-tree/nvim-web-devicons', -- optional, for file icons
+      "nvim-tree/nvim-web-devicons"
     },
     config = function()
       require('nvim-tree').setup({
@@ -259,6 +253,8 @@ return {
   -- Nvim Nabla (Scientific Notation)
   {
     'jbyuki/nabla.nvim',
+    ft = "norg",
+    lazy = true,
     config = function()
       vim.keymap.set('n', '<leader>n', require('nabla').toggle_virt)
     end
