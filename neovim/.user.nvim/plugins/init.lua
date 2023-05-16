@@ -30,9 +30,15 @@ local function nvim_tree_on_attach(bufnr)
 end
 
 return {
+  -- Disable lsp_signature so that Noice can handle it
+  {
+    "ray-x/lsp_signature.nvim",
+    enabled = false
+  },
+
   -- Tokyo Night (Night) Theme
   {
-    'folke/tokyonight.nvim',
+    "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
     config = function()
