@@ -27,11 +27,17 @@ nmap <leader><space> <action>(Switcher)
 
 """ Goto X/Find X
 nmap <leader>sf <action>(GotoFile)
+nmap <leader>si <action>(SelectIn)
 nmap <leader>gd <action>(GotoDeclaration)
 nmap <leader>gi <action>(GotoImplementation)
-nmap <leader>gm <action>(GotoSuperMethod)
+nmap <leader>gs <action>(GotoSuperMethod)
+nmap <leader>gt <action>(GotoTypeDeclaration)
 nmap <leader>gu <action>(ShowUsages)
-nmap <leader>gs <action>(SelectIn)
+
+""" Error Checking
+nmap <leader>d <action>(ShowErrorDescription)
+nmap <leader>e <action>(GotoNextError)
+nmap <leader>ee <action>(GotoPreviousError)
 
 """ Reformatting code
 nmap <leader>f <action>(ReformatCode)
@@ -57,8 +63,3 @@ nmap <leader>td <action>(Debug)
 nmap <leader>th <action>(HideAllWindows)
 nmap <leader>b <action>(ToggleLineBreakpoint)
 nmap <leader>G <action>(Gradle.ExecuteTask)
-
-""" Error Checking
-nmap <leader>d <action>(ShowErrorDescription)
-nmap <leader>e <action>(GotoNextError)
-
