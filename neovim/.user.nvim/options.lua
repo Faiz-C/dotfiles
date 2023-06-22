@@ -11,4 +11,6 @@ vim.opt.termguicolors = true
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.relativenumber = false
-vim.o.lazyredraw = false
+
+-- This is for Noice, you can disable it here but I disable it in the common options.lua file
+-- vim.o.lazyredraw = false

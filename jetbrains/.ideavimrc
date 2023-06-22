@@ -37,7 +37,7 @@ nmap <leader>gu <action>(ShowUsages)
 """ Error Checking
 nmap <leader>d <action>(ShowErrorDescription)
 nmap <leader>e <action>(GotoNextError)
-nmap <leader>ee <action>(GotoPreviousError)
+nmap <leader>E <action>(GotoPreviousError)
 
 """ Reformatting code
 nmap <leader>f <action>(ReformatCode)
