@@ -285,6 +285,19 @@ return {
     end
   },
 
+  -- Nvim Mind
+  {
+    'phaazon/mind.nvim',
+    branch = 'v2.2',
+    dependencies = {
+       'nvim-lua/plenary.nvim'
+    },
+    config = function ()
+      require('mind').setup()
+    end
+  },
+
+
   -- Nvim Nabla (Scientific Notation)
   {
     'jbyuki/nabla.nvim',

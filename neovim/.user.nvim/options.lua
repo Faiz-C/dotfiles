@@ -12,5 +12,5 @@ vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.relativenumber = false
 
--- This is for Noice, you can disable it here but I disable it in the common options.lua file
+-- This is for Noice
 -- vim.o.lazyredraw = false
