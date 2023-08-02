@@ -30,6 +30,12 @@ local function nvim_tree_on_attach(bufnr)
 end
 
 return {
+  -- Disable Copilot which comes from the shared config as I don't use it 
+  {
+    "github/copilot.vim",
+    enabled = false
+  },
+
   -- Disable lsp_signature so that Noice can handle it
   {
     "ray-x/lsp_signature.nvim",
