@@ -30,12 +30,6 @@ local function nvim_tree_on_attach(bufnr)
 end
 
 return {
-  -- Disable Copilot which comes from the shared config as I don't use it 
-  {
-    "github/copilot.vim",
-    enabled = false
-  },
-
   -- Disable lsp_signature so that Noice can handle it
   {
     "ray-x/lsp_signature.nvim",
@@ -72,7 +66,9 @@ return {
         ["core.export"] = {},
         ["core.concealer"] = {
           config = {
-            folds = false,
+            init_open_folds = "auto",
+            icon_preset = "basic",
+            folds = true,
             width = "content",
             preset = "diamond",
           },
@@ -159,44 +155,68 @@ return {
   -- Borrowed from https://github.com/nvim-lua/kickstart.nvim
   {
     'nvim-telescope/telescope.nvim',
-     tag = '0.1.1',
-     dependencies = {
-       'nvim-lua/plenary.nvim'
-     },
-     config = function()
-       require('telescope').setup {
-         defaults = {
-           mappings = {
-             i = {
-               ['<C-u>'] = false,
-               ['<C-d>'] = false,
-             },
-           },
-           file_ignore_patterns = {
-             "^[./]*.git/",
-           },
-         },
-         pickers = {
-           find_files = {
-             hidden = true,
-             no_ignore = false,
-           },
-         },
-         extensions = {
-           file_browser = {
-             hidden = true,
-           },
-         },
-       }
+    dependencies = {
+      'nvim-lua/plenary.nvim'
+    },
+    config = function()
+      require('telescope').setup {
+        defaults = {
+          preview = {
+            buffer_previewer_maker = function(filepath, bufnr, opts)
+              local opts = opts or {}
+              local filepath = vim.fn.expand(filepath)
+              local max_bytes = 10000
 
-       vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-       vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-       vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-       vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-       vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-       vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-       vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-       vim.keymap.set('n', '<leader>gd', require('telescope.builtin').lsp_references, { desc = '[S]earch [D]iagnostics' })
+              vim.loop.fs_stat(
+                filepath,
+                function(_, stat)
+                  if not stat or stat.size > max_bytes then
+                    return
+                  else
+                    require('telescope.previewers').buffer_previewer_maker(filepath, bufnr, opts)
+                  end
+                end
+              )
+            end
+          },
+          mappings = {
+            i = {
+              ['<C-u>'] = false,
+              ['<C-d>'] = false,
+            },
+         },
+         vimgrep_arguments = {
+          'rg',
+          '--color=never',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case',
+          '-u' -- ignore binaries
+         },
+        },
+        pickers = {
+          find_files = {
+            hidden = true,
+            no_ignore = false,
+          },
+        },
+        extensions = {
+          file_browser = {
+            hidden = true,
+          },
+        },
+      }
+
+      vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
+      vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+      vim.keymap.set('n', '<leader>gd', require('telescope.builtin').lsp_references, { desc = '[S]earch [D]iagnostics' })
     end
   },
 

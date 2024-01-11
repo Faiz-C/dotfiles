@@ -12,5 +12,8 @@ vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.relativenumber = false
 
+--vim.opt.foldmethod = "expr"
+--vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
 -- This is for Noice
 -- vim.o.lazyredraw = false
