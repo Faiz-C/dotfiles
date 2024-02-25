@@ -27,12 +27,18 @@ nmap <leader><space> <action>(Switcher)
 
 """ Goto X/Find X
 nmap <leader>sf <action>(GotoFile)
+nmap <leader>sc <action>(GotoClass)
+nmap <leader>sr <action>(RecentFiles)
 nmap <leader>si <action>(SelectIn)
 nmap <leader>gd <action>(GotoDeclaration)
 nmap <leader>gi <action>(GotoImplementation)
 nmap <leader>gs <action>(GotoSuperMethod)
 nmap <leader>gt <action>(GotoTypeDeclaration)
 nmap <leader>gu <action>(ShowUsages)
+
+""" Find/Replace in File
+nmap <leader>ff <action>(Find)
+nmap <leader>rr <action>(Replace)
 
 """ Error Checking
 nmap <leader>d <action>(ShowErrorDescription)
@@ -57,9 +63,7 @@ vmap <leader>y "+y
 nmap <leader>o <action>(FileStructurePopup)
 
 """ IDE Tool Integrations
-nmap <leader>tp <action>(Project)
+nmap <leader>tg <action>(Gradle.ExecuteTask)
 nmap <leader>tr <action>(Run)
 nmap <leader>td <action>(Debug)
-nmap <leader>th <action>(HideAllWindows)
 nmap <leader>b <action>(ToggleLineBreakpoint)
-nmap <leader>G <action>(Gradle.ExecuteTask)
