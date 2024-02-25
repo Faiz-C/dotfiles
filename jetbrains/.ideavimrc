@@ -62,6 +62,7 @@ vmap <leader>y "+y
 nmap <leader>o <action>(FileStructurePopup)
 
 """ IDE Tool Integrations
+nmap <leader>th <action>(HideAllWindows)
 nmap <leader>tg <action>(Gradle.ExecuteTask)
 nmap <leader>tr <action>(Run)
 nmap <leader>td <action>(Debug)
