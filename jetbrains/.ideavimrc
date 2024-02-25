@@ -46,7 +46,6 @@ nmap <leader>e <action>(GotoNextError)
 nmap <leader>E <action>(GotoPreviousError)
 
 """ Reformatting code
-nmap <leader>f <action>(ReformatCode)
 vmap <leader>f <action>(ReformatCode)
 
 """ Refactoring
