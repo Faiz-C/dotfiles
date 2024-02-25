@@ -38,7 +38,7 @@ nmap <leader>gu <action>(ShowUsages)
 
 """ Find/Replace in File
 nmap <leader>ff <action>(Find)
-nmap <leader>rr <action>(Replace)
+nmap <leader>fr <action>(Replace)
 
 """ Error Checking
 nmap <leader>d <action>(ShowErrorDescription)
