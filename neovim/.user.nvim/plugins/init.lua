@@ -156,7 +156,12 @@ return {
       vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>gd', require('telescope.builtin').lsp_references, { desc = '[S]earch [D]iagnostics' })
+
+      -- LSP
+      vim.keymap.set('n', '<leader>gu', require('telescope.builtin').lsp_references, { desc = '[G]oto [U]sages' })
+      vim.keymap.set('n', '<leader>gs', require('telescope.builtin').lsp_document_symbols, { desc = '[G]oto [S]ymbols' })
+      vim.keymap.set('n', '<leader>gws', require('telescope.builtin').lsp_workspace_symbols, { desc = '[G]oto [W]orkspace [S]ymbols' })
+      vim.keymap.set('n', '<leader>gd', require('telescope.builtin').lsp_definitions, { desc = '[G]oto [W]orkspace [S]ymbols' })
     end
   },
 
