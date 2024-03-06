@@ -91,66 +91,6 @@ return {
     }
   },
 
-  -- Noice (Experimental)
-  {
-    "folke/noice.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("noice").setup {
-        lsp = {
-          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
-          },
-        },
-
-        presets = {
-          bottom_search = false,
-          command_palette = true,
-          long_message_to_split = true,
-          inc_rename = false,
-          lsp_doc_border = true,
-        },
-      }
-
-      require("telescope").load_extension("noice")
-      require("nvim-treesitter.configs").setup {
-        ensure_installed = {
-          "vim",
-          "regex",
-          "lua",
-          "bash",
-          "markdown",
-          "markdown_inline"
-        }
-      }
-
-      vim.keymap.set({"n", "i", "s"}, "<c-j>",
-        function()
-          if not require("noice.lsp").scroll(4) then
-            return "<c-j>"
-          end
-        end,
-        { silent = true, expr = true }
-      )
-
-      vim.keymap.set({"n", "i", "s"}, "<c-b>",
-        function()
-          if not require("noice.lsp").scroll(-4) then
-            return "<c-b>"
-          end
-        end,
-        { silent = true, expr = true }
-      )
-    end
-  },
-
   -- Telescope
   -- Borrowed from https://github.com/nvim-lua/kickstart.nvim
   {
@@ -243,6 +183,68 @@ return {
     end
   },
 
+  -- Noice (Experimental)
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("noice").setup {
+        lsp = {
+          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
+          },
+          view = "notify",
+        },
+
+        presets = {
+          bottom_search = false,
+          command_palette = true,
+          long_message_to_split = true,
+          inc_rename = false,
+          lsp_doc_border = true,
+        },
+      }
+
+      require("telescope").load_extension("noice")
+      require("nvim-treesitter.configs").setup {
+        ensure_installed = {
+          "vim",
+          "regex",
+          "lua",
+          "bash",
+          "markdown",
+          "markdown_inline"
+        }
+      }
+
+      vim.keymap.set({"n", "i", "s"}, "<c-j>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<c-j>"
+          end
+        end,
+        { silent = true, expr = true }
+      )
+
+      vim.keymap.set({"n", "i", "s"}, "<c-b>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<c-b>"
+          end
+        end,
+        { silent = true, expr = true }
+      )
+    end
+  },
+
   -- Nvim Tree
   {
     'nvim-tree/nvim-tree.lua',
@@ -291,6 +293,9 @@ return {
   -- Nvim Projects
   {
     'ahmedkhalf/project.nvim',
+    dependencies = {
+      "nvim-tree/nvim-tree.lua"
+    },
     config = function()
       require('project_nvim').setup {
         show_hidden = true,
@@ -310,19 +315,6 @@ return {
       vim.keymap.set('n', '<leader>sp', '<cmd>Telescope projects<cr>', { noremap = true })
     end
   },
-
-  -- Nvim Mind
-  {
-    'phaazon/mind.nvim',
-    branch = 'v2.2',
-    dependencies = {
-       'nvim-lua/plenary.nvim'
-    },
-    config = function ()
-      require('mind').setup()
-    end
-  },
-
 
   -- Nvim Nabla (Scientific Notation)
   {
@@ -347,7 +339,7 @@ return {
     end
   },
 
-  -- Nvim Bufferline
+  -- Nvim Bufferline (tabs)
   {
     'akinsho/bufferline.nvim',
     version = "*",
