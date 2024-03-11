@@ -209,6 +209,25 @@ return {
           view = "notify",
         },
 
+        routes = {
+          {
+            filter = {
+              event = "msg_show",
+              kind = "",
+              find = "written"
+            },
+            view = "mini"
+          },
+          {
+            filter = {
+              event = "msg_show",
+              kind = "",
+              find = "line"
+            },
+            skip = true
+          }
+        },
+
         presets = {
           bottom_search = false,
           command_palette = true,
