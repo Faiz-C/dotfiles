@@ -1,7 +1,6 @@
 local function nvim_tree_on_attach(bufnr)
   local api = require('nvim-tree.api')
 
-
   local function opts(desc)
     return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
   end
@@ -29,15 +28,9 @@ local function nvim_tree_on_attach(bufnr)
   vim.keymap.set('n', 'u', api.tree.change_root_to_parent, opts('UP'))
 end
 
-return {
-  -- Disable lsp_signature so that Noice can handle it
-  {
-    "ray-x/lsp_signature.nvim",
-    enabled = false
-  },
-
-  -- Tokyo Night (Night) Theme
-  {
+local selectedTheme = os.getenv("NEOVIM_THEME") or "kanagawa"
+local themes = {
+  ["tokyonight"] = {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
@@ -46,6 +39,60 @@ return {
         style = "night"
       })
       vim.cmd([[colorscheme tokyonight-night]])
+    end
+  },
+  ["kanagawa"] = {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd([[colorscheme kanagawa]])
+    end
+  },
+  ["nordic"] = {
+    "AlexvZyl/nordic.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("nordic").load()
+      vim.cmd([[colorscheme nordic]])
+    end
+  },
+  ["ayu"] = {
+    "Shatur/neovim-ayu",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("ayu").setup({
+        mirage = true,
+        overrides = {}
+      })
+      vim.cmd([[colorscheme ayu]])
+    end
+
+  }
+}
+
+return {
+  -- Disable lsp_signature so that Noice can handle it
+  {
+    "ray-x/lsp_signature.nvim",
+    enabled = false
+  },
+
+  themes[selectedTheme],
+
+  -- Copilot Chat
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    event = "VeryLazy",
+    branch = "canary",
+    dependencies = {
+      "github/copilot.vim",
+      "nvim-lua/plenary.nvim",
+    },
+    config = function ()
+      require("CopilotChat").setup()
     end
   },
 
@@ -196,8 +243,11 @@ return {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
       "nvim-treesitter/nvim-treesitter",
+      "smjonas/inc-rename.nvim"
     },
     config = function()
+      require("inc_rename").setup()
+
       require("noice").setup {
         lsp = {
           -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -225,14 +275,22 @@ return {
               find = "line"
             },
             skip = true
-          }
+          },
+          {
+            filter = {
+              event = "msg_show",
+              kind = "",
+              find = "CopilotChat"
+            },
+            view = "mini"
+          },
         },
 
         presets = {
           bottom_search = false,
           command_palette = true,
           long_message_to_split = true,
-          inc_rename = false,
+          inc_rename = true,
           lsp_doc_border = true,
         },
       }
@@ -248,6 +306,10 @@ return {
           "markdown_inline"
         }
       }
+
+      vim.keymap.set("n", "<leader>r", function()
+        return ":IncRename " .. vim.fn.expand("<cword>")
+      end, { expr = true })
 
       vim.keymap.set({"n", "i", "s"}, "<c-j>",
         function()
@@ -310,7 +372,7 @@ return {
         end,
         },
       })
-      vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<cr>', { noremap = true })
+      vim.keymap.set('n', '<a-j>', '<cmd>NvimTreeToggle<cr>', { noremap = true })
     end
   },
 
