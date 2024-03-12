@@ -74,12 +74,24 @@ local themes = {
 }
 
 return {
+  -- Local colors plugin example
+  {
+    dir = "~/dotfiles/neovim/colors",
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function ()
+      require("telescope").load_extension("colors")
+    end
+  },
+
   -- Disable lsp_signature so that Noice can handle it
   {
     "ray-x/lsp_signature.nvim",
     enabled = false
   },
 
+  -- Loads selected theme as a plugin
   themes[selectedTheme],
 
   -- Copilot Chat
