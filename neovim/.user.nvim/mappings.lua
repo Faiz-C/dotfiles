@@ -40,3 +40,4 @@ require('legendary').keymaps({
   { '<Esc>', '<C-\\><C-n>', mode = { 't' }},
   { '<leader>T', open_toggle_term }
 })
+

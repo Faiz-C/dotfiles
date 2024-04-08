@@ -74,17 +74,6 @@ local themes = {
 }
 
 return {
-  -- Local colors plugin example
-  {
-    dir = "~/dotfiles/neovim/colors",
-    dependencies = {
-      'nvim-telescope/telescope.nvim',
-    },
-    config = function ()
-      require("telescope").load_extension("colors")
-    end
-  },
-
   -- Disable lsp_signature so that Noice can handle it
   {
     "ray-x/lsp_signature.nvim",
@@ -102,17 +91,30 @@ return {
     dependencies = {
       "github/copilot.vim",
       "nvim-lua/plenary.nvim",
+      'nvim-telescope/telescope.nvim',
     },
     config = function ()
       require("CopilotChat").setup()
     end
   },
 
-  -- Nvim Neorg
+  -- Luarocks
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    config = true
+  },
+
+  -- Neorg
   {
     "nvim-neorg/neorg",
     ft = "norg",
-    build = ":Neorg sync-parsers", -- This is the important bit!
+    dependencies = {
+      "luarocks.nvim"
+    },
+    lazy = false,
+    version = "*",
+    config = true,
     opts = {
       load = {
         ["core.defaults"] = {},
