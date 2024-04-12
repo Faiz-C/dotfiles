@@ -93,8 +93,40 @@ return {
       "nvim-lua/plenary.nvim",
       'nvim-telescope/telescope.nvim',
     },
-    config = function ()
+    config = function()
       require("CopilotChat").setup()
+    end
+  },
+
+  {
+    "LintaoAmons/scratch.nvim",
+    event = "VeryLazy",
+  },
+
+  {
+    "jbyuki/venn.nvim",
+    ft = "norg",
+    config = function()
+      function _G.Toggle_venn()
+        local venn_enabled = vim.inspect(vim.b.venn_enabled)
+        if venn_enabled == "nil" then
+          vim.b.venn_enabled = true
+          vim.cmd [[setlocal ve=all]]
+          -- draw a line on HJKL keystokes
+          vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", { noremap = true })
+          vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", { noremap = true })
+          vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", { noremap = true })
+          vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", { noremap = true })
+          -- draw a box by pressing "f" with visual selection
+          vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", { noremap = true })
+        else
+          vim.cmd [[setlocal ve=]]
+          vim.cmd [[mapclear <buffer>]]
+          vim.b.venn_enabled = nil
+        end
+      end
+
+      vim.keymap.set("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true })
     end
   },
 
@@ -185,17 +217,17 @@ return {
               ['<C-u>'] = false,
               ['<C-d>'] = false,
             },
-         },
-         vimgrep_arguments = {
-          'rg',
-          '--color=never',
-          '--no-heading',
-          '--with-filename',
-          '--line-number',
-          '--column',
-          '--smart-case',
-          '-u' -- ignore binaries
-         },
+          },
+          vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '-u' -- ignore binaries
+          },
         },
         pickers = {
           find_files = {
@@ -210,7 +242,8 @@ return {
         },
       }
 
-      vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
+      vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles,
+        { desc = '[?] Find recently opened files' })
       vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
@@ -221,8 +254,10 @@ return {
       -- LSP
       vim.keymap.set('n', '<leader>gu', require('telescope.builtin').lsp_references, { desc = '[G]oto [U]sages' })
       vim.keymap.set('n', '<leader>gs', require('telescope.builtin').lsp_document_symbols, { desc = '[G]oto [S]ymbols' })
-      vim.keymap.set('n', '<leader>gws', require('telescope.builtin').lsp_workspace_symbols, { desc = '[G]oto [W]orkspace [S]ymbols' })
-      vim.keymap.set('n', '<leader>gd', require('telescope.builtin').lsp_definitions, { desc = '[G]oto [W]orkspace [S]ymbols' })
+      vim.keymap.set('n', '<leader>gws', require('telescope.builtin').lsp_workspace_symbols,
+        { desc = '[G]oto [W]orkspace [S]ymbols' })
+      vim.keymap.set('n', '<leader>gd', require('telescope.builtin').lsp_definitions,
+        { desc = '[G]oto [W]orkspace [S]ymbols' })
     end
   },
 
@@ -311,21 +346,27 @@ return {
 
       require("telescope").load_extension("noice")
       require("nvim-treesitter.configs").setup {
+        modules = {},
         ensure_installed = {
           "vim",
           "regex",
           "lua",
           "bash",
           "markdown",
-          "markdown_inline"
-        }
+          "markdown_inline",
+          "kotlin",
+          "c",
+        },
+        auto_install = true,
+        sync_install = false,
+        ignore_install = {},
       }
 
       vim.keymap.set("n", "<leader>r", function()
         return ":IncRename " .. vim.fn.expand("<cword>")
       end, { expr = true })
 
-      vim.keymap.set({"n", "i", "s"}, "<c-j>",
+      vim.keymap.set({ "n", "i", "s" }, "<c-j>",
         function()
           if not require("noice.lsp").scroll(4) then
             return "<c-j>"
@@ -334,7 +375,7 @@ return {
         { silent = true, expr = true }
       )
 
-      vim.keymap.set({"n", "i", "s"}, "<c-b>",
+      vim.keymap.set({ "n", "i", "s" }, "<c-b>",
         function()
           if not require("noice.lsp").scroll(-4) then
             return "<c-b>"
@@ -352,10 +393,9 @@ return {
       "nvim-tree/nvim-web-devicons"
     },
     config = function()
-
       -- Taken from the recipes section of the nvim-tree github repo
-      local HEIGHT_RATIO = 0.8  -- You can change this
-      local WIDTH_RATIO = 0.5   -- You can change this too
+      local HEIGHT_RATIO = 0.8 -- You can change this
+      local WIDTH_RATIO = 0.5  -- You can change this too
 
       require('nvim-tree').setup({
         on_attach = nvim_tree_on_attach,
@@ -380,10 +420,10 @@ return {
                 height = window_h_int,
               }
             end,
-        },
-        width = function()
-          return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
-        end,
+          },
+          width = function()
+            return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
+          end,
         },
       })
       vim.keymap.set('n', '<a-j>', '<cmd>NvimTreeToggle<cr>', { noremap = true })

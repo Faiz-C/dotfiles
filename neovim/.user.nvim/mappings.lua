@@ -24,9 +24,6 @@ require('legendary').keymaps({
   -- Fzf
   { '<M-x>', fzf.commands },
 
-  -- Fzf Git
-  { '<leader>gs', fzf.git_status, mode = { 'n' } },
-
   -- Clearing search
   { '<leader>cl', '<cmd>noh<cr>' },
 
