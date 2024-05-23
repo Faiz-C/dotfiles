@@ -178,8 +178,7 @@ return {
               notes = "~/notes",
             }
           }
-        },
-        ["core.manoeuvre"] = {},
+        }
       }
     }
   },
