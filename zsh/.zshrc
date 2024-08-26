@@ -37,3 +37,5 @@ esac
 
 # Alias'
 alias k="kubectl"
+alias notes="nvim ~/notes"
+alias todo="nvim ~/notes/todo.norg"
