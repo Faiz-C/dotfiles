@@ -87,7 +87,7 @@ return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     event = "VeryLazy",
-    branch = "canary",
+    branch = "main",
     dependencies = {
       "github/copilot.vim",
       "nvim-lua/plenary.nvim",
@@ -484,7 +484,17 @@ return {
     version = "*",
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      require('bufferline').setup {}
+      vim.opt.termguicolors = true
+      require('bufferline').setup {
+        options = {
+          mode = "tabs",
+          themable = true,
+          diagnostics = "nvim_lsp",
+          indicator = {
+            style = "underline"
+          }
+        }
+      }
     end
   },
 
