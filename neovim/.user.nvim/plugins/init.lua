@@ -479,24 +479,24 @@ return {
   },
 
   -- Nvim Bufferline (tabs)
-  {
-    'akinsho/bufferline.nvim',
-    version = "*",
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      vim.opt.termguicolors = true
-      require('bufferline').setup {
-        options = {
-          mode = "tabs",
-          themable = true,
-          diagnostics = "nvim_lsp",
-          indicator = {
-            style = "underline"
-          }
-        }
-      }
-    end
-  },
+  --{
+  --  'akinsho/bufferline.nvim',
+  --  version = "*",
+  --  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  --  config = function()
+  --    vim.opt.termguicolors = true
+  --    require('bufferline').setup {
+  --      options = {
+  --        mode = "buffers",
+  --        themable = true,
+  --        diagnostics = "nvim_lsp",
+  --        indicator = {
+  --          style = "underline"
+  --        }
+  --      }
+  --    }
+  --  end
+  --},
 
   -- Nvim Autopairs
   {
