@@ -16,7 +16,7 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR=nvim
 export VISUAL="$EDITOR"
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:/opt/nvim-linux64/bin:$PATH"
 
 # PNPM HOME
 export PNPM_HOME="$HOME/.pnpm"
