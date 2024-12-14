@@ -1,3 +1,6 @@
+[general]
+working_directory = '\\wsl$\Debian\home\hades'
+
 [colors.bright]
 black = "0x444b6a"
 blue = "0x7da6ff"
@@ -26,16 +29,20 @@ foreground = "0xa9b1d6"
 shape = "Underline"
 
 [font]
-size = 20.0
+size = 16.0
 
 [font.bold]
-family = "Fira Code"
+family = "FiraCode Nerd Font"
 style = "Bold"
 
 [font.normal]
-family = "Fira Code"
+family = "FiraCode Nerd Font"
 style = "Light"
 
 [window]
 decorations = "full"
 startup_mode = "Windowed"
+
+[terminal]
+[terminal.shell]
+program = "wsl"
