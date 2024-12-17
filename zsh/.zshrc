@@ -18,6 +18,9 @@ export VISUAL="$EDITOR"
 
 export PATH="$HOME/.local/bin:/opt/nvim-linux64/bin:$PATH"
 
+# Linuxbrew (homebrew for linux since apt is just too slow on updates)
+[ -d /home/linuxbrew/.linuxbrew ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
 # PNPM HOME
 export PNPM_HOME="$HOME/.pnpm"
 case ":$PATH:" in
