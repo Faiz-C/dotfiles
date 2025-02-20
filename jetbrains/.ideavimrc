@@ -45,12 +45,11 @@ nmap <leader>d <action>(ShowErrorDescription)
 nmap <leader>e <action>(GotoNextError)
 nmap <leader>E <action>(GotoPreviousError)
 
-""" Reformatting code
-vmap <leader>f <action>(ReformatCode)
-
 """ Refactoring
 nmap <leader>r <action>(RenameElement)
+nmap <leader>F <action>(ReformatCode)
 nmap <leader>R <action>(ChangeSignature)
+vmap <leader>F <action>(ReformatCode)
 
 """ System clipboard copying and pasting
 nmap <leader>P "+p
