@@ -1,34 +1,5 @@
-local function nvim_tree_on_attach(bufnr)
-  local api = require('nvim-tree.api')
+local selectedTheme = os.getenv("NEOVIM_THEME") or "tokyonight"
 
-  local function opts(desc)
-    return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-  end
-
-  api.config.mappings.default_on_attach(bufnr)
-
-  vim.keymap.set('n', 'O', '', { buffer = bufnr })
-  vim.keymap.del('n', 'O', { buffer = bufnr })
-  vim.keymap.set('n', '<2-RightMouse>', '', { buffer = bufnr })
-  vim.keymap.del('n', '<2-RightMouse>', { buffer = bufnr })
-  vim.keymap.set('n', 'D', '', { buffer = bufnr })
-  vim.keymap.del('n', 'D', { buffer = bufnr })
-  vim.keymap.set('n', 'E', '', { buffer = bufnr })
-  vim.keymap.del('n', 'E', { buffer = bufnr })
-
-  vim.keymap.set('n', 'A', api.tree.expand_all, opts('Expand All'))
-  vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
-  vim.keymap.set('n', 'C', api.tree.change_root_to_node, opts('CD'))
-  vim.keymap.set('n', 'P', function()
-    local node = api.tree.get_node_under_cursor()
-    print(node.absolute_path)
-  end, opts('Print Node Path'))
-
-  vim.keymap.set('n', 'Z', api.node.run.system, opts('Run System'))
-  vim.keymap.set('n', 'u', api.tree.change_root_to_parent, opts('UP'))
-end
-
-local selectedTheme = os.getenv("NEOVIM_THEME") or "kanagawa"
 local themes = {
   ["tokyonight"] = {
     "folke/tokyonight.nvim",
@@ -80,54 +51,92 @@ return {
     enabled = false
   },
 
+  {
+    'saghen/blink.cmp',
+    dependencies = 'rafamadriz/friendly-snippets',
+    version = '*',
+    event = { 'InsertEnter' },
+    opts = {
+      keymap = {
+        preset = 'enter',
+        ['<TAB>'] = { 'select_next', 'fallback' },
+        ['<S-TAB>'] = { 'select_prev', 'fallback' },
+      },
+
+      signature = { enabled = true },
+
+      completion = {
+        menu = {
+          draw = {
+            padding = { 0, 1 },
+            columns = { { 'kind_icon' }, { 'label' }, { 'source_name' } },
+            components = {
+              kind_icon = {
+                text = function(ctx) return ' ' .. ctx.kind_icon .. ' ' .. ctx.icon_gap end,
+              },
+            },
+          },
+        },
+        list = {
+          selection = {
+            preselect = true
+          }
+        },
+        documentation = {
+          auto_show = true,
+        }
+      },
+
+      cmdline = {
+        keymap = {
+          ['<Tab>'] = { 'accept' },
+          ['<CR>'] = { 'accept_and_enter', 'fallback' }
+        },
+        completion = {
+          menu = {
+            auto_show = true
+          }
+        }
+      },
+
+      sources = {
+        providers = {
+          cmdline = {
+            min_keyword_length = function(ctx)
+              -- when typing a command, only show when the keyword is 3 characters or longer
+              if ctx.mode == 'cmdline' and string.find(ctx.line, ' ') == nil then return 3 end
+              return 0
+            end
+          }
+        }
+      },
+
+      opts_extend = { 'sources.default' }
+    }
+  },
+
   -- Loads selected theme as a plugin
   themes[selectedTheme],
 
-  -- Copilot Chat
   {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    event = "VeryLazy",
-    branch = "main",
-    dependencies = {
-      "github/copilot.vim",
-      "nvim-lua/plenary.nvim",
-      'nvim-telescope/telescope.nvim',
-    },
-    config = function()
-      require("CopilotChat").setup()
-    end
+    "bngarren/checkmate.nvim",
+    ft = "markdown",
+    opts = {
+      files = {
+        "todo",
+        "TODO",
+        "todo.md",
+        "TODO.md",
+        "*.todo",
+        "*.todo.md",
+        "todo.neorg"
+      },
+    }
   },
 
   {
     "LintaoAmons/scratch.nvim",
     event = "VeryLazy",
-  },
-
-  {
-    "jbyuki/venn.nvim",
-    ft = "norg",
-    config = function()
-      function _G.Toggle_venn()
-        local venn_enabled = vim.inspect(vim.b.venn_enabled)
-        if venn_enabled == "nil" then
-          vim.b.venn_enabled = true
-          vim.cmd [[setlocal ve=all]]
-          -- draw a line on HJKL keystokes
-          vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", { noremap = true })
-          vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", { noremap = true })
-          vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", { noremap = true })
-          vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", { noremap = true })
-          -- draw a box by pressing "f" with visual selection
-          vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", { noremap = true })
-        else
-          vim.cmd [[setlocal ve=]]
-          vim.cmd [[mapclear <buffer>]]
-          vim.b.venn_enabled = nil
-        end
-      end
-
-      vim.keymap.set("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true })
-    end
   },
 
   -- Luarocks
@@ -142,7 +151,8 @@ return {
     "nvim-neorg/neorg",
     ft = "norg",
     dependencies = {
-      "luarocks.nvim"
+      "luarocks.nvim",
+      "hrsh7th/nvim-cmp"
     },
     lazy = false,
     version = "*",
@@ -240,46 +250,6 @@ return {
           },
         },
       }
-
-      vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles,
-        { desc = '[?] Find recently opened files' })
-      vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-
-      -- LSP
-      vim.keymap.set('n', '<leader>gu', require('telescope.builtin').lsp_references, { desc = '[G]oto [U]sages' })
-      vim.keymap.set('n', '<leader>gs', require('telescope.builtin').lsp_document_symbols, { desc = '[G]oto [S]ymbols' })
-      vim.keymap.set('n', '<leader>gws', require('telescope.builtin').lsp_workspace_symbols,
-        { desc = '[G]oto [W]orkspace [S]ymbols' })
-      vim.keymap.set('n', '<leader>gd', require('telescope.builtin').lsp_definitions,
-        { desc = '[G]oto [W]orkspace [S]ymbols' })
-    end
-  },
-
-  -- Telescope Fzf Native
-  -- Borrowed from https://github.com/nvim-lua/kickstart.nvim
-  {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'make',
-    enabled = vim.fn.executable 'make' == 1,
-    config = function()
-      require('telescope').load_extension('fzf')
-    end
-  },
-
-  -- Telescope File Browser
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons"
-    },
-    config = function()
-      require('telescope').load_extension('file_browser')
-      vim.keymap.set('n', '<leader>sj', '<cmd>Telescope file_browser<cr>', { noremap = true })
     end
   },
 
@@ -294,7 +264,7 @@ return {
       "smjonas/inc-rename.nvim"
     },
     config = function()
-      require("inc_rename").setup()
+      require("inc_rename").setup {}
 
       require("noice").setup {
         lsp = {
@@ -344,7 +314,7 @@ return {
       }
 
       require("telescope").load_extension("noice")
-      require("nvim-treesitter.configs").setup {
+      require("nvim-treesitter.config").setup {
         modules = {},
         ensure_installed = {
           "vim",
@@ -385,71 +355,14 @@ return {
     end
   },
 
-  -- Nvim Tree
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = {
-      "nvim-tree/nvim-web-devicons"
-    },
-    config = function()
-      -- Taken from the recipes section of the nvim-tree github repo
-      local HEIGHT_RATIO = 0.8 -- You can change this
-      local WIDTH_RATIO = 0.5  -- You can change this too
-
-      require('nvim-tree').setup({
-        on_attach = nvim_tree_on_attach,
-        view = {
-          float = {
-            enable = true,
-            open_win_config = function()
-              local screen_w = vim.opt.columns:get()
-              local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
-              local window_w = screen_w * WIDTH_RATIO
-              local window_h = screen_h * HEIGHT_RATIO
-              local window_w_int = math.floor(window_w)
-              local window_h_int = math.floor(window_h)
-              local center_x = (screen_w - window_w) / 2
-              local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
-              return {
-                border = 'rounded',
-                relative = 'editor',
-                row = center_y,
-                col = center_x,
-                width = window_w_int,
-                height = window_h_int,
-              }
-            end,
-          },
-          width = function()
-            return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
-          end,
-        },
-      })
-      vim.keymap.set('n', '<a-j>', '<cmd>NvimTreeToggle<cr>', { noremap = true })
-    end
-  },
-
   -- Nvim Projects
   {
     'ahmedkhalf/project.nvim',
-    dependencies = {
-      "nvim-tree/nvim-tree.lua"
-    },
     config = function()
       require('project_nvim').setup {
         show_hidden = true,
         scope_chdir = 'win',
       }
-
-      require('nvim-tree').setup({
-        sync_root_with_cwd = true,
-        respect_buf_cwd = true,
-        update_focused_file = {
-          enable = true,
-          update_root = true,
-        },
-      })
-
       require('telescope').load_extension('projects')
       vim.keymap.set('n', '<leader>sp', '<cmd>Telescope projects<cr>', { noremap = true })
     end
@@ -477,26 +390,6 @@ return {
       vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { noremap = true })
     end
   },
-
-  -- Nvim Bufferline (tabs)
-  --{
-  --  'akinsho/bufferline.nvim',
-  --  version = "*",
-  --  dependencies = { 'nvim-tree/nvim-web-devicons' },
-  --  config = function()
-  --    vim.opt.termguicolors = true
-  --    require('bufferline').setup {
-  --      options = {
-  --        mode = "buffers",
-  --        themable = true,
-  --        diagnostics = "nvim_lsp",
-  --        indicator = {
-  --          style = "underline"
-  --        }
-  --      }
-  --    }
-  --  end
-  --},
 
   -- Nvim Autopairs
   {

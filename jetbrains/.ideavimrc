@@ -37,8 +37,8 @@ nmap <leader>gt <action>(GotoTypeDeclaration)
 nmap <leader>gu <action>(ShowUsages)
 
 """ Find/Replace in File
-nmap <leader>ff <action>(Find)
-nmap <leader>fr <action>(Replace)
+nmap <leader>af <action>(Find)
+nmap <leader>ar <action>(Replace)
 
 """ Error Checking
 nmap <leader>d <action>(ShowErrorDescription)
@@ -47,9 +47,9 @@ nmap <leader>E <action>(GotoPreviousError)
 
 """ Refactoring
 nmap <leader>r <action>(RenameElement)
-nmap <leader>F <action>(ReformatCode)
+nmap <leader>f <action>(ReformatCode)
+vmap <leader>f <action>(ReformatCode)
 nmap <leader>R <action>(ChangeSignature)
-vmap <leader>F <action>(ReformatCode)
 
 """ System clipboard copying and pasting
 nmap <leader>P "+p
