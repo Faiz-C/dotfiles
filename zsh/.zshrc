@@ -44,8 +44,4 @@ export DOTNET_ROOT="$HOME/.dotnet"
 # Alias'
 alias k="kubectl"
 alias todo="nvim +Dooing"
-alias notes='nvim "+SnacksExplore ~/notes"'
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/fgchaudhry/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+alias notes="nvim ~/notes"
