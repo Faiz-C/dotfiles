@@ -1,3 +1,6 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 require('shared.setup').setup({
     install_plugins = function()
         return require('plugins')
@@ -46,10 +49,9 @@ require('shared.setup').setup({
 
     config = function ()
         require('mappings')
+        require("commands")
 
-        -- disable netrw at the very start of your init.lua (strongly advised)
-        vim.g.loaded_netrw = 1
-        vim.g.loaded_netrwPlugin = 1
+        vim.o.lazyredraw = false
 
         -- set termguicolors to enable highlight groups
         vim.opt.termguicolors = true

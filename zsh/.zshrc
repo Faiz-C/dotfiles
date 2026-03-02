@@ -16,7 +16,7 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR=nvim
 export VISUAL="$EDITOR"
 
-export PATH="$HOME/.local/bin:/opt/nvim-linux64/bin:$PATH"
+export PATH="$HOME/.dotnet:$HOME/.local/bin:/opt/nvim-linux64/bin:$PATH"
 
 # Linuxbrew (homebrew for linux since apt is just too slow on updates)
 [ -d /home/linuxbrew/.linuxbrew ] && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
@@ -38,7 +38,14 @@ case ":$PATH:" in
   *) export PATH="$RUBY_HOME:$PATH" ;;
 esac
 
+# DOTNET
+export DOTNET_ROOT="$HOME/.dotnet"
+
 # Alias'
 alias k="kubectl"
-alias notes="nvim ~/notes"
-alias todo="nvim ~/notes/todo.norg"
+alias todo="nvim +Dooing"
+alias notes='nvim "+SnacksExplore ~/notes"'
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/fgchaudhry/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

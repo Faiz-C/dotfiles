@@ -2,6 +2,7 @@ local sp = require('snacks.picker')
 local sf = require('shared.functions')
 local ext = require('shared.extensions')
 local wk = require('which-key')
+local fn = require("functions")
 
 wk.add({
     -- Clearing search
@@ -39,12 +40,7 @@ wk.add({
     -- Picker
     { '<leader><space>', function() sp.buffers({ formatters = { file = { filename_first = true } } }) end },
     { '<leader>sf', function() sp.files({ hidden = true }) end },
-    { '<leader>se', function ()
-        sp.explorer({
-            tree = true,
-            layout = { preset = 'default' },
-        })
-    end },
+    { '<leader>se', function () fn.ExploreDirectory() end },
     { '<leader>sg', sp.grep },
     { '<leader>sr', sp.recent },
     { '<leader>sR', sp.resume },

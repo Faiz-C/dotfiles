@@ -45,10 +45,29 @@ local themes = {
 }
 
 return {
+  -- Loads selected theme as a plugin
+  themes[selectedTheme],
+
   -- Disable lsp_signature so that Noice can handle it
   {
     "ray-x/lsp_signature.nvim",
     enabled = false
+  },
+
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    config = function()
+      require('snacks').setup({
+        picker = { enabled = true, },
+        input = { enabled = true },
+        bufdelete = { enabled = true },
+        git = { enabled = true },
+        gitbrowse = { enabled = true },
+        explorer = { enabled = true },
+      })
+    end,
   },
 
   {
@@ -110,28 +129,58 @@ return {
           }
         }
       },
-
-      opts_extend = { 'sources.default' }
     }
   },
 
-  -- Loads selected theme as a plugin
-  themes[selectedTheme],
-
   {
-    "bngarren/checkmate.nvim",
-    ft = "markdown",
-    opts = {
-      files = {
-        "todo",
-        "TODO",
-        "todo.md",
-        "TODO.md",
-        "*.todo",
-        "*.todo.md",
-        "todo.neorg"
-      },
-    }
+    "atiladefreitas/dooing",
+    config = function()
+      require("dooing").setup({
+        keymaps = {
+          create_nested_task = "n"
+        },
+        per_project = {
+          enabled = false
+        },
+
+        window = {
+          width = 120,
+          height = 50
+        },
+
+        priorities = {
+          {
+            name = "important",
+            weight = 4,
+          },
+          {
+            name = "urgent",
+            weight = 2,
+          },
+          {
+            name = "normal",
+            weight = 1
+          },
+        },
+        priority_groups = {
+          high = {
+            members = { "urgent" },
+            color = nil,
+            hl_group = "DiagnosticError",
+          },
+          medium = {
+            members = { "important" },
+            color = nil,
+            hl_group = "DiagnosticWarn",
+          },
+          low = {
+            members = { "normal" },
+            color = nil,
+            hl_group = "DiagnosticInfo",
+          },
+        }
+      })
+    end
   },
 
   {
